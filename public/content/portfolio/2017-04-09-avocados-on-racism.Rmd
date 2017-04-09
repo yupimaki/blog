@@ -1,0 +1,306 @@
+---
+date: "2017-01-07"
+type: "post"
+showonlyimage: false
+draft: false
+title: "Avocados on Racism"
+subtitle: "So white people pay attention to it"
+image: "img/portfolio/avocados-on-racism/avacardoe.jpg"
+description: "A picture speaks 1000 words which I can't be bothered to repeat"
+---
+
+```{r setup, include=FALSE}
+quiet_library = function(lib) {
+  suppressMessages(
+    library(
+      lib, 
+      character.only = TRUE, 
+      quietly = TRUE
+    )
+  )
+}
+```
+
+_So white people pay attention to it._
+
+```{r density, fig.width=7.5, fig.height=5.5, echo=FALSE}
+img1 = png::readPNG("../../static/img/portfolio/avocados-on-racism/density.png")
+grid::grid.raster(img1) 
+```
+
+and to pre-empt the next usual question
+
+```{r resolve, fig.width=7.5, fig.height=5.5, echo=FALSE}
+img2 = png::readPNG("../../static/img/portfolio/avocados-on-racism/resolve.png")
+grid::grid.raster(img2) 
+```
+
+1. The size of this region is facetious
+
+### Appendix
+
+__Code for density plot__
+
+```{r density-code, eval=FALSE}
+libs = c("tikzDevice", "ggplot2", "purrr", "tidyr", "dplyr")
+sapply(libs, quiet_library)
+
+n = 50
+label_height = 0.3
+colours = c("steelblue", "black", "red", "green")
+
+tbl = tibble::tribble(
+  ~`$x$`            , ~val                              ,
+  "White people"    , rnorm(n, 0.25, 1.3)               ,
+  "People of colour", rgamma(n, shape = 7.5, rate = 2.6)
+) %>% unnest(val)
+
+means = tbl %>% 
+  group_by(`$x$`) %>% 
+  summarise(mean = mean(val)) %>% 
+  arrange(`$x$`)
+
+ggplot(tbl) + 
+  geom_density(
+    aes(x = val, fill = `$x$`, col = NULL), 
+    lwd = 0, alpha = 0.6
+  ) +
+  geom_vline(
+    data = means, 
+    aes(xintercept = mean, col = `$x$`), 
+    lty = 2
+  ) +
+  geom_segment(
+    y = label_height, yend = label_height, 
+    x = min(means$mean), xend = max(means$mean), 
+    arrow = arrow(
+      ends = "last", 
+      type = "closed", 
+      length = unit(0.25, units = "cm")
+    )
+  ) +
+  geom_label(
+    x = mean(means$mean), y = label_height, 
+    label = "Shit white people\ninflict on POC"
+  ) +
+  theme_minimal() + 
+  xlim(-4, 7) +
+  labs(
+    title = "Racism", subtitle = "Now in an easy to understand plot\n",
+    x = "Amount of shit $x$ have to put up with",
+    y = "Density"
+  ) +
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 16),
+    axis.title = element_text(size = 14),
+    axis.text = element_blank(),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12),
+    legend.position = "bottom"
+  ) +
+  scale_fill_manual(values = colours) +
+  scale_color_manual(values = colours, guide = FALSE)
+```
+
+```{r density-code-latex, include=FALSE, eval=FALSE}
+libs = c("tikzDevice", "ggplot2", "purrr", "tidyr", "dplyr")
+sapply(libs, quiet_library)
+
+n = 50
+label_height = 0.3
+colours = c("steelblue", "black", "red", "green")
+
+tbl = tibble::tribble(
+  ~`$x$`            , ~val                              ,
+  "White people"    , rnorm(n, 0.25, 1.3)               ,
+  "People of colour", rgamma(n, shape = 7.5, rate = 2.6)
+) %>% unnest(val)
+
+means = tbl %>% 
+  group_by(`$x$`) %>% 
+  summarise(mean = mean(val)) %>% 
+  arrange(`$x$`)
+
+tikzDevice::tikz(
+  "../../static/portfolio/2017-04-09-avocados-on-racism_files/tex/density.tex",
+  width = 7.5,
+  height = 5.5
+)
+
+p_1 = ggplot(tbl) + 
+  geom_density(
+    aes(x = val, fill = `$x$`, col = NULL), 
+    lwd = 0, alpha = 0.6
+  ) +
+  geom_vline(
+    data = means, 
+    aes(xintercept = mean, col = `$x$`), 
+    lty = 2
+  ) +
+  geom_segment(
+    y = label_height, yend = label_height, 
+    x = min(means$mean), xend = max(means$mean), 
+    arrow = arrow(
+      ends = "last", 
+      type = "closed", 
+      length = unit(0.25, units = "cm")
+    )
+  ) +
+  geom_label(
+    x = mean(means$mean), y = label_height, 
+    label = "Shit white people\ninflict on POC"
+  ) +
+  theme_minimal() + 
+  xlim(-4, 7) +
+  labs(
+    title = "Racism", subtitle = "Now in an easy to understand plot\n",
+    x = "Amount of shit $x$ have to put up with",
+    y = "Density"
+  ) +
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 16),
+    axis.title = element_text(size = 14),
+    axis.text = element_blank(),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12),
+    legend.position = "bottom"
+  ) +
+  scale_fill_manual(values = colours) +
+  scale_color_manual(values = colours, guide = FALSE)
+
+print(p_1)
+
+dev.off()
+
+system("lualatex ../../static/portfolio/2017-04-09-avocados-on-racism_files/tex/density-wrapper.tex")
+
+system("convert -density 300 density-wrapper.pdf -quality 90 density.png")
+
+system("rm density-wrapper.pdf density-wrapper.log density-wrapper.aux")
+
+system("mv density.png ../../static/img/portfolio/avocados-on-racism/density.png")
+```
+
+__Code for bar plot__
+
+```{r resolve-code, eval=FALSE}
+tbl_resolve = tibble::tribble(
+  ~where              , ~`$x$`            , ~`Shit from`                                          , ~val,
+  "From other people" , "White People"    , "People of colour"                                    , 3   ,
+  "From other people" , "People of colour", "White people"                                        , 10  ,
+  "From society"      , "White People"    , "People of colour"                                    , 1   ,
+  "From society"      , "People of colour", "White people"                                        , 15  ,
+  "From other people" , "People of colour", "Previous iterations of\nthe same conversation$^1$"   , 0.2 ,
+  "From other people" , "People of colour", "The conversation we were\npresumably just having$^1$", 0.1
+)
+
+order = c(
+  "The conversation we were\npresumably just having$^1$",
+  "Previous iterations of\nthe same conversation$^1$", 
+  "People of colour", 
+  "White people"
+)
+
+colours2 = c("green", "red", "steelblue", "black")
+
+tbl_resolve = tbl_resolve %>% mutate(`Shit from` = factor(`Shit from`, levels = order))
+
+ggplot(tbl_resolve, aes(order = `Shit from`)) + 
+  geom_col(aes(x = `$x$`, y = val, fill = `Shit from`), alpha = 0.6) +
+  facet_wrap(~where) +
+  theme_minimal() + 
+  labs(
+    title = "Resolving that thing you want resolved",
+    subtitle = "Absolute shit is greater in the white $\\rightarrow$ POC direction",
+    x = "Inflicted on",
+    y = "Total shit recieved"
+  ) +
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 16),
+    axis.title = element_text(size = 14),
+    axis.text.y = element_blank(),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  ) +
+  scale_fill_manual(values = colours2) +
+  scale_color_manual(values = colours2, guide = FALSE) + 
+  guides(
+    fill = guide_legend(
+      keywidth=0.2,
+      keyheight=0.4,
+      default.unit="inch"
+    )
+  )
+```
+
+```{r resolve-code-latex, include=FALSE, eval=FALSE}
+tbl_resolve = tibble::tribble(
+  ~where              , ~`$x$`            , ~`Shit from`                                          , ~val,
+  "From other people" , "White People"    , "People of colour"                                    , 3   ,
+  "From other people" , "People of colour", "White people"                                        , 10  ,
+  "From society"      , "White People"    , "People of colour"                                    , 1   ,
+  "From society"      , "People of colour", "White people"                                        , 15  ,
+  "From other people" , "People of colour", "Previous iterations of\nthe same conversation$^1$"   , 0.2 ,
+  "From other people" , "People of colour", "The conversation we were\npresumably just having$^1$", 0.1
+)
+
+order = c(
+  "The conversation we were\npresumably just having$^1$",
+  "Previous iterations of\nthe same conversation$^1$", 
+  "People of colour", 
+  "White people"
+)
+
+colours2 = c("green", "red", "steelblue", "black")
+
+tbl_resolve = tbl_resolve %>% mutate(`Shit from` = factor(`Shit from`, levels = order))
+
+tikzDevice::tikz(
+  "../../static/portfolio/2017-04-09-avocados-on-racism_files/tex/resolve.tex",
+  width = 7.5,
+  height = 5.5
+)
+
+p_2 = ggplot(tbl_resolve, aes(order = `Shit from`)) + 
+  geom_col(aes(x = `$x$`, y = val, fill = `Shit from`), alpha = 0.6) +
+  facet_wrap(~where) +
+  theme_minimal() + 
+  labs(
+    title = "Resolving that thing you want resolved",
+    subtitle = "Absolute shit is greater in the white $\\rightarrow$ POC direction",
+    x = "Inflicted on",
+    y = "Total shit recieved"
+  ) +
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 16),
+    axis.title = element_text(size = 14),
+    axis.text.y = element_blank(),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  ) +
+  scale_fill_manual(values = colours2) +
+  scale_color_manual(values = colours2, guide = FALSE) + 
+  guides(
+    fill = guide_legend(
+      keywidth=0.2,
+      keyheight=0.4,
+      default.unit="inch"
+    )
+  )
+
+print(p_2)
+
+dev.off()
+
+system("lualatex ../../static/portfolio/2017-04-09-avocados-on-racism_files/tex/resolve-wrapper.tex")
+
+system("convert -density 300 resolve-wrapper.pdf -quality 90 resolve.png")
+
+system("rm resolve-wrapper.pdf resolve-wrapper.log resolve-wrapper.aux")
+
+system("mv resolve.png ../../static/img/portfolio/avocados-on-racism/resolve.png")
+```
