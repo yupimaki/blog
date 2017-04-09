@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Avocados on Racism</title>
+<meta name="description" content="Things I have motivation to write about">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="all,follow">
+<meta name="googlebot" content="index,follow,snippet,archive">
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,300,700,400italic">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/owl.carousel.css">
+<link rel="stylesheet" href="/css/owl.theme.css">
+
+
+  <link href="/css/style.default.css" rel="stylesheet" id="theme-stylesheet">
+
+
+<link href="/css/custom.css" rel="stylesheet">
+<link rel="shortcut icon" href="/img/favicon.png">
+
+
+</head>
+<body>
+  <div id="all">
+      <div class="container-fluid">
+          <div class="row row-offcanvas row-offcanvas-left">
+              <div id="sidebar" class="col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas">
+  <div class="sidebar-content">
+    <h1 class="sidebar-heading"><a href="/">Akhil Nair</a></h1>
+    
+      <p class="sidebar-p">I am a data science consultant working in the rail industry with a background in Maths and Statistics</p>
+    
+      <p class="sidebar-p">Originally from London, based in London.</p>
+    
+    <ul class="sidebar-menu">
+      
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/about/">About</a></li>
+      
+        <li><a href="/contact/">Get in touch</a></li>
+      
+    </ul>
+    <p class="social">
+  
+  <a href="https://www.facebook.com/yupimaki" data-animate-hover="pulse" class="external facebook">
+    <i class="fa fa-facebook"></i>
+  </a>
+  
+  
+  
+  
+  
+  <a href="mailto:yup.im.aki@gmail.com" data-animate-hover="pulse" class="email">
+    <i class="fa fa-envelope"></i>
+  </a>
+  
+  
+  <a href="https://www.linkedin.com/in/akhil-nair-7b13316b/" data-animate-hover="pulse">
+    <i class="fa fa-linkedin"></i>
+  </a>
+  
+  
+  <a href="http://stackoverflow.com/users/4303355/akhil-nair?tab=profile" data-animate-hover="pulse">
+    <i class="fa fa-stack-overflow"></i>
+  </a>
+  
+  
+  <a href="https://github.com/AkhilNairAmey" data-animate-hover="pulse">
+    <i class="fa fa-github"></i>
+  </a>
+  
+</p>
+
+
+    <div class="copyright">
+      <p class="credit">
+        
+          &copy;2017 Akhil Nair
+        
+        | Template by <a href="https://bootstrapious.com/free-templates" class="external">Bootstrapious.com</a>
+
+&amp; ported to Hugo by <a href="https://github.com/kishaningithub">Kishan B</a>
+
+      </p>
+    </div>
+  </div>
+</div>
+
+              
+<div class="col-xs-12 col-sm-8 col-md-9 content-column white-background">
+  <div class="small-navbar visible-xs">
+  <button type="button" data-toggle="offcanvas" class="btn btn-ghost pull-left"> <i class="fa fa-align-left"> </i>Menu</button>
+  <h1 class="small-navbar-heading"><a href="/">Akhil Nair</a></h1>
+</div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="content-column-content">
+         <h1>Avocados on Racism</h1>
+         <p><em>So white people pay attention to it.</em></p>
+<p><img src="/portfolio/2017-04-09-avocados-on-racism_files/figure-html/density-1.png" width="720" /></p>
+<p>and to pre-empt the next usual question</p>
+<p><img src="/portfolio/2017-04-09-avocados-on-racism_files/figure-html/resolve-1.png" width="720" /></p>
+<ol style="list-style-type: decimal">
+<li>The size of this region is facetious</li>
+</ol>
+<div id="appendix" class="section level3">
+<h3>Appendix</h3>
+<p><strong>Code for density plot</strong></p>
+<pre class="r"><code>libs = c(&quot;tikzDevice&quot;, &quot;ggplot2&quot;, &quot;purrr&quot;, &quot;tidyr&quot;, &quot;dplyr&quot;)
+sapply(libs, quiet_library)
+
+n = 50
+label_height = 0.3
+colours = c(&quot;steelblue&quot;, &quot;black&quot;, &quot;red&quot;, &quot;green&quot;)
+
+tbl = tibble::tribble(
+  ~`$x$`            , ~val                              ,
+  &quot;White people&quot;    , rnorm(n, 0.25, 1.3)               ,
+  &quot;People of colour&quot;, rgamma(n, shape = 7.5, rate = 2.6)
+) %&gt;% unnest(val)
+
+means = tbl %&gt;% 
+  group_by(`$x$`) %&gt;% 
+  summarise(mean = mean(val)) %&gt;% 
+  arrange(`$x$`)
+
+ggplot(tbl) + 
+  geom_density(
+    aes(x = val, fill = `$x$`, col = NULL), 
+    lwd = 0, alpha = 0.6
+  ) +
+  geom_vline(
+    data = means, 
+    aes(xintercept = mean, col = `$x$`), 
+    lty = 2
+  ) +
+  geom_segment(
+    y = label_height, yend = label_height, 
+    x = min(means$mean), xend = max(means$mean), 
+    arrow = arrow(
+      ends = &quot;last&quot;, 
+      type = &quot;closed&quot;, 
+      length = unit(0.25, units = &quot;cm&quot;)
+    )
+  ) +
+  geom_label(
+    x = mean(means$mean), y = label_height, 
+    label = &quot;Shit white people\ninflict on POC&quot;
+  ) +
+  theme_minimal() + 
+  xlim(-4, 7) +
+  labs(
+    title = &quot;Racism&quot;, subtitle = &quot;Now in an easy to understand plot\n&quot;,
+    x = &quot;Amount of shit $x$ have to put up with&quot;,
+    y = &quot;Density&quot;
+  ) +
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 16),
+    axis.title = element_text(size = 14),
+    axis.text = element_blank(),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12),
+    legend.position = &quot;bottom&quot;
+  ) +
+  scale_fill_manual(values = colours) +
+  scale_color_manual(values = colours, guide = FALSE)</code></pre>
+<p><strong>Code for bar plot</strong></p>
+<pre class="r"><code>tbl_resolve = tibble::tribble(
+  ~where              , ~`$x$`            , ~`Shit from`                                          , ~val,
+  &quot;From other people&quot; , &quot;White People&quot;    , &quot;People of colour&quot;                                    , 3   ,
+  &quot;From other people&quot; , &quot;People of colour&quot;, &quot;White people&quot;                                        , 10  ,
+  &quot;From society&quot;      , &quot;White People&quot;    , &quot;People of colour&quot;                                    , 1   ,
+  &quot;From society&quot;      , &quot;People of colour&quot;, &quot;White people&quot;                                        , 15  ,
+  &quot;From other people&quot; , &quot;People of colour&quot;, &quot;Previous iterations of\nthe same conversation$^1$&quot;   , 0.2 ,
+  &quot;From other people&quot; , &quot;People of colour&quot;, &quot;The conversation we were\npresumably just having$^1$&quot;, 0.1
+)
+
+order = c(
+  &quot;The conversation we were\npresumably just having$^1$&quot;,
+  &quot;Previous iterations of\nthe same conversation$^1$&quot;, 
+  &quot;People of colour&quot;, 
+  &quot;White people&quot;
+)
+
+colours2 = c(&quot;green&quot;, &quot;red&quot;, &quot;steelblue&quot;, &quot;black&quot;)
+
+tbl_resolve = tbl_resolve %&gt;% mutate(`Shit from` = factor(`Shit from`, levels = order))
+
+ggplot(tbl_resolve, aes(order = `Shit from`)) + 
+  geom_col(aes(x = `$x$`, y = val, fill = `Shit from`), alpha = 0.6) +
+  facet_wrap(~where) +
+  theme_minimal() + 
+  labs(
+    title = &quot;Resolving that thing you want resolved&quot;,
+    subtitle = &quot;Absolute shit is greater in the white $\\rightarrow$ POC direction&quot;,
+    x = &quot;Inflicted on&quot;,
+    y = &quot;Total shit recieved&quot;
+  ) +
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 16),
+    axis.title = element_text(size = 14),
+    axis.text.y = element_blank(),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  ) +
+  scale_fill_manual(values = colours2) +
+  scale_color_manual(values = colours2, guide = FALSE) + 
+  guides(
+    fill = guide_legend(
+      keywidth=0.2,
+      keyheight=0.4,
+      default.unit=&quot;inch&quot;
+    )
+  )</code></pre>
+</div>
+
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+          </div>
+      </div>
+  </div>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.cookie.js"> </script>
+<script src="/js/ekko-lightbox.js"></script>
+<script src="/js/jquery.scrollTo.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/front.js"></script>
+
+</body>
+</html>
