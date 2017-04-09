@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Portfolios on Akhil Nair</title>
+    <link>/portfolio/index.xml</link>
+    <description>Recent content in Portfolios on Akhil Nair</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy;2017 Akhil Nair</copyright>
+    <lastBuildDate>Sat, 07 Jan 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/portfolio/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Avocados on Racism</title>
+      <link>/portfolio/2017-04-09-avocados-on-racism/</link>
+      <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/portfolio/2017-04-09-avocados-on-racism/</guid>
+      <description>&lt;p&gt;&lt;em&gt;So white people pay attention to it.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-04-09-avocados-on-racism_files/figure-html/density-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;and to pre-empt the next usual question&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-04-09-avocados-on-racism_files/figure-html/resolve-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;The size of this region is facetious&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div id=&#34;appendix&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Appendix&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Code for density plot&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;libs = c(&amp;quot;tikzDevice&amp;quot;, &amp;quot;ggplot2&amp;quot;, &amp;quot;purrr&amp;quot;, &amp;quot;tidyr&amp;quot;, &amp;quot;dplyr&amp;quot;)
+sapply(libs, quiet_library)
+
+n = 50
+label_height = 0.3
+colours = c(&amp;quot;steelblue&amp;quot;, &amp;quot;black&amp;quot;, &amp;quot;red&amp;quot;, &amp;quot;green&amp;quot;)
+
+tbl = tibble::tribble(
+  ~`$x$`            , ~val                              ,
+  &amp;quot;White people&amp;quot;    , rnorm(n, 0.25, 1.3)               ,
+  &amp;quot;People of colour&amp;quot;, rgamma(n, shape = 7.5, rate = 2.6)
+) %&amp;gt;% unnest(val)
+
+means = tbl %&amp;gt;% 
+  group_by(`$x$`) %&amp;gt;% 
+  summarise(mean = mean(val)) %&amp;gt;% 
+  arrange(`$x$`)
+
+ggplot(tbl) + 
+  geom_density(
+    aes(x = val, fill = `$x$`, col = NULL), 
+    lwd = 0, alpha = 0.6
+  ) +
+  geom_vline(
+    data = means, 
+    aes(xintercept = mean, col = `$x$`), 
+    lty = 2
+  ) +
+  geom_segment(
+    y = label_height, yend = label_height, 
+    x = min(means$mean), xend = max(means$mean), 
+    arrow = arrow(
+      ends = &amp;quot;last&amp;quot;, 
+      type = &amp;quot;closed&amp;quot;, 
+      length = unit(0.25, units = &amp;quot;cm&amp;quot;)
+    )
+  ) +
+  geom_label(
+    x = mean(means$mean), y = label_height, 
+    label = &amp;quot;Shit white people\ninflict on POC&amp;quot;
+  ) +
+  theme_minimal() + 
+  xlim(-4, 7) +
+  labs(
+    title = &amp;quot;Racism&amp;quot;, subtitle = &amp;quot;Now in an easy to understand plot\n&amp;quot;,
+    x = &amp;quot;Amount of shit $x$ have to put up with&amp;quot;,
+    y = &amp;quot;Density&amp;quot;
+  ) +
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 16),
+    axis.title = element_text(size = 14),
+    axis.text = element_blank(),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12),
+    legend.position = &amp;quot;bottom&amp;quot;
+  ) +
+  scale_fill_manual(values = colours) +
+  scale_color_manual(values = colours, guide = FALSE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;Code for bar plot&lt;/strong&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;tbl_resolve = tibble::tribble(
+  ~where              , ~`$x$`            , ~`Shit from`                                          , ~val,
+  &amp;quot;From other people&amp;quot; , &amp;quot;White People&amp;quot;    , &amp;quot;People of colour&amp;quot;                                    , 3   ,
+  &amp;quot;From other people&amp;quot; , &amp;quot;People of colour&amp;quot;, &amp;quot;White people&amp;quot;                                        , 10  ,
+  &amp;quot;From society&amp;quot;      , &amp;quot;White People&amp;quot;    , &amp;quot;People of colour&amp;quot;                                    , 1   ,
+  &amp;quot;From society&amp;quot;      , &amp;quot;People of colour&amp;quot;, &amp;quot;White people&amp;quot;                                        , 15  ,
+  &amp;quot;From other people&amp;quot; , &amp;quot;People of colour&amp;quot;, &amp;quot;Previous iterations of\nthe same conversation$^1$&amp;quot;   , 0.2 ,
+  &amp;quot;From other people&amp;quot; , &amp;quot;People of colour&amp;quot;, &amp;quot;The conversation we were\npresumably just having$^1$&amp;quot;, 0.1
+)
+
+order = c(
+  &amp;quot;The conversation we were\npresumably just having$^1$&amp;quot;,
+  &amp;quot;Previous iterations of\nthe same conversation$^1$&amp;quot;, 
+  &amp;quot;People of colour&amp;quot;, 
+  &amp;quot;White people&amp;quot;
+)
+
+colours2 = c(&amp;quot;green&amp;quot;, &amp;quot;red&amp;quot;, &amp;quot;steelblue&amp;quot;, &amp;quot;black&amp;quot;)
+
+tbl_resolve = tbl_resolve %&amp;gt;% mutate(`Shit from` = factor(`Shit from`, levels = order))
+
+ggplot(tbl_resolve, aes(order = `Shit from`)) + 
+  geom_col(aes(x = `$x$`, y = val, fill = `Shit from`), alpha = 0.6) +
+  facet_wrap(~where) +
+  theme_minimal() + 
+  labs(
+    title = &amp;quot;Resolving that thing you want resolved&amp;quot;,
+    subtitle = &amp;quot;Absolute shit is greater in the white $\\rightarrow$ POC direction&amp;quot;,
+    x = &amp;quot;Inflicted on&amp;quot;,
+    y = &amp;quot;Total shit recieved&amp;quot;
+  ) +
+  theme(
+    plot.title = element_text(size = 20),
+    plot.subtitle = element_text(size = 16),
+    axis.title = element_text(size = 14),
+    axis.text.y = element_blank(),
+    legend.title = element_text(size = 14),
+    legend.text = element_text(size = 12)
+  ) +
+  scale_fill_manual(values = colours2) +
+  scale_color_manual(values = colours2, guide = FALSE) + 
+  guides(
+    fill = guide_legend(
+      keywidth=0.2,
+      keyheight=0.4,
+      default.unit=&amp;quot;inch&amp;quot;
+    )
+  )&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>This is a plain md</title>
+      <link>/portfolio/Renamed-file/</link>
+      <pubDate>Sat, 05 Nov 2016 20:02:19 +0530</pubDate>
+      
+      <guid>/portfolio/Renamed-file/</guid>
+      <description>&lt;p&gt;Some blurb text&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.&lt;/p&gt;
+
+&lt;p&gt;A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.&lt;/li&gt;
+&lt;li&gt;Aliquam tincidunt mauris eu risus.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn&amp;rsquo;t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;header-level-2&#34;&gt;Header Level 2&lt;/h2&gt;
+
+&lt;p&gt;Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.&lt;/p&gt;
+
+&lt;p&gt;The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn&amp;rsquo;t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.&lt;/li&gt;
+&lt;li&gt;Aliquam tincidunt mauris eu risus.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Item with image</title>
+      <link>/portfolio/work1/</link>
+      <pubDate>Sat, 05 Nov 2016 20:23:59 +0530</pubDate>
+      
+      <guid>/portfolio/work1/</guid>
+      <description>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+&lt;/p&gt;
+
+&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.&lt;/p&gt;
+
+&lt;p&gt;A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.&lt;/li&gt;
+&lt;li&gt;Aliquam tincidunt mauris eu risus.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn&amp;rsquo;t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&#34;header-level-2&#34;&gt;Header Level 2&lt;/h2&gt;
+
+&lt;p&gt;Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.&lt;/p&gt;
+
+&lt;p&gt;The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn&amp;rsquo;t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.&lt;/li&gt;
+&lt;li&gt;Aliquam tincidunt mauris eu risus.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
