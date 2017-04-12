@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Portfolios on Akhil Nair</title>
-    <link>/portfolio/index.xml</link>
+    <link>https://akhilnairamey.github.io/portfolio/index.xml</link>
     <description>Recent content in Portfolios on Akhil Nair</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>en-uk</language>
     <copyright>&amp;copy;2017 Akhil Nair</copyright>
     <lastBuildDate>Sat, 07 Jan 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/portfolio/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://akhilnairamey.github.io/portfolio/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Avocados on Racism</title>
-      <link>/portfolio/2017-04-09-avocados-on-racism/</link>
+      <link>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</link>
       <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/portfolio/2017-04-09-avocados-on-racism/</guid>
+      <guid>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</guid>
       <description>&lt;p&gt;&lt;em&gt;So white people pay attention to it.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/portfolio/2017-04-09-avocados-on-racism_files/figure-html/density-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism_files/figure-html/density-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;and to pre-empt the next usual question&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/portfolio/2017-04-09-avocados-on-racism_files/figure-html/resolve-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism_files/figure-html/resolve-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;The size of this region is facetious&lt;/li&gt;
 &lt;/ol&gt;
@@ -140,10 +140,10 @@ ggplot(tbl_resolve, aes(order = `Shit from`)) +
     
     <item>
       <title>This is a plain md</title>
-      <link>/portfolio/Renamed-file/</link>
+      <link>https://akhilnairamey.github.io/portfolio/Renamed-file/</link>
       <pubDate>Sat, 05 Nov 2016 20:02:19 +0530</pubDate>
       
-      <guid>/portfolio/Renamed-file/</guid>
+      <guid>https://akhilnairamey.github.io/portfolio/Renamed-file/</guid>
       <description>&lt;p&gt;Some blurb text&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
@@ -177,10 +177,10 @@ ggplot(tbl_resolve, aes(order = `Shit from`)) +
     
     <item>
       <title>Item with image</title>
-      <link>/portfolio/work1/</link>
+      <link>https://akhilnairamey.github.io/portfolio/work1/</link>
       <pubDate>Sat, 05 Nov 2016 20:23:59 +0530</pubDate>
       
-      <guid>/portfolio/work1/</guid>
+      <guid>https://akhilnairamey.github.io/portfolio/work1/</guid>
       <description>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
 &lt;/p&gt;
 
