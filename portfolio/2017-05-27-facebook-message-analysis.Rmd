@@ -152,9 +152,10 @@ And the nice table we're left with is...
 
 ```{r, message=FALSE, warning=FALSE}
 dt %>%
-  `[`(sample(1:.N, 20), -"message") %>%
-  `[`(, .(thread, year, timestamp, user, message = "hidden")) %>% 
-  head(10)
+    `[`(sample(1:.N, 20), -"message") %>% 
+    `[`(, id := 1:.N) %>%
+    `[`(, .(thread, year, timestamp, user = strsplit(user, " ")[[1]][1], message = "hidden"), id) %>% 
+    head(10)
 
 ```
 
