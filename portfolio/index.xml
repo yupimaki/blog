@@ -2,24 +2,371 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Portfolios on Akhil Nair</title>
-    <link>https://akhilnairamey.github.io/portfolio/index.xml</link>
+    <link>/portfolio/index.xml</link>
     <description>Recent content in Portfolios on Akhil Nair</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
     <copyright>&amp;copy;2017 Akhil Nair</copyright>
-    <lastBuildDate>Sat, 07 Jan 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://akhilnairamey.github.io/portfolio/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 27 May 2017 00:00:00 +0000</lastBuildDate>
+    <atom:link href="/portfolio/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Facebook Message Analysis</title>
+      <link>/portfolio/2017-05-27-facebook-message-analysis/</link>
+      <pubDate>Sat, 27 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/portfolio/2017-05-27-facebook-message-analysis/</guid>
+      <description>&lt;p&gt;Let’s try and find out for ourselves just how much Facebook knows about me, given I waived my privacy to them back in 2009. If you download your own through settings on your profile and have some familiarity with R, you should be able to run the same graphs off from your own data. The markdown file is available on my github page and there’s a code dump as the appendix.&lt;/p&gt;
+&lt;p&gt;First the data needs to be rvested (hah, good one Hadley) from the downloaded &lt;code&gt;messages.htm&lt;/code&gt; file. This initially confused me but it turns out:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The messages are arrange into threads of max message count 10,000 per person&lt;/li&gt;
+&lt;li&gt;The messages are given out of order, with some batshit formatted timestamp&lt;/li&gt;
+&lt;li&gt;The message chain can’t be reconstructed as seconds are missing from the timestamp
+&lt;ul&gt;
+&lt;li&gt;Facebook why &lt;code&gt;:&#39;(&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;The conventions by which sometimes the user’s alias is given, and sometimes their ID is given is completely unclear to me.
+&lt;ul&gt;
+&lt;li&gt;It is also very irritating&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div id=&#34;scraping&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Scraping&lt;/h2&gt;
+&lt;p&gt;Xpaths make this pretty easy. Cheers then xpaths.&lt;/p&gt;
+&lt;p&gt;The first thing we can scrap is a table that is boring to look at, but is useful to identify participants of a conversation.&lt;br /&gt;
+Any thread with more than 2 participants is a group thread. The rest of the analysis can be done grouped by thread to keep that separation.&lt;/p&gt;
+&lt;p&gt;I tried a couple of &lt;code&gt;htmlwidgets&lt;/code&gt; options to display this table but they didn’t work instantly (and my god iframes are ugly). This actually looks fine though, in my opinion.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dt_participants[, .(thread, n_people, convo)] %&amp;gt;% 
+  head(10)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##     thread n_people   convo
+##  1:      1        2 private
+##  2:      2        2 private
+##  3:      3        2 private
+##  4:      4        8   group
+##  5:      5        4   group
+##  6:      6       10   group
+##  7:      7        2 private
+##  8:      8        2 private
+##  9:      9        8   group
+## 10:     10        2 private&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It’s then easy to use xpaths to grab the few fields offered to us&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The sender of the message&lt;/li&gt;
+&lt;li&gt;The meta (which is just the timestamp without seconds)&lt;/li&gt;
+&lt;li&gt;The actual message&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;And the nice table we’re left with is…&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dt %&amp;gt;%
+  `[`(sample(1:.N, 20), -&amp;quot;message&amp;quot;) %&amp;gt;%
+  `[`(, .(thread, year, timestamp, user, message = &amp;quot;hidden&amp;quot;)) %&amp;gt;% 
+  head(10)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##     thread year           timestamp                   user message
+##  1:    140 2014 2014-01-08 01:45:00             Akhil Nair  hidden
+##  2:    511 2012 2012-12-26 01:31:00          Hanna Greeman  hidden
+##  3:    510 2012 2012-08-01 21:29:00             Akhil Nair  hidden
+##  4:    518 2013 2013-06-22 13:12:00             Akhil Nair  hidden
+##  5:    511 2017 2017-03-23 22:20:00 731072799@facebook.com  hidden
+##  6:    514 2011 2011-12-17 21:48:00        Caroline Hughes  hidden
+##  7:    517 2012 2012-12-30 23:08:00         Robert Hickman  hidden
+##  8:    519 2014 2014-07-28 12:20:00             Akhil Nair  hidden
+##  9:    254 2016 2016-02-28 21:51:00             Akhil Nair  hidden
+## 10:     21 2013 2013-03-08 18:15:00             Akhil Nair  hidden&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You may note that I have removed my messages. If anyone wants to offer up anything they actually wrote back in 2009, be my guest.&lt;/p&gt;
+&lt;div id=&#34;a-free-graph.&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;A free graph.&lt;/h3&gt;
+&lt;p&gt;It’s pretty easy to see where I stopped using MSN messenger.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_msg_per_year-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;users&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Users&lt;/h2&gt;
+&lt;p&gt;This bit was extremely annoying as I had to actually do something by hand, which involved aliasing everyone who has changed their name. I also matched up the facebook IDs to the standardised name by hand as I was already going in. I did this for the top 100 people I spoke to overall, and also the top 20 people who I spoke to per year.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Top 100 people: &lt;code&gt;dt[, .N, user][order(-N)][1:100]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Top 20 per year: &lt;code&gt;dt[, .N, .(year, user)][order(-N), head(.SD, 20), year]&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;People who were quite interesting to me here were people who I’d only frequently spoken to in 1 or 2 years. That’s not to say my #dayones aren’t interesting.&lt;/p&gt;
+&lt;div id=&#34;years-facet-names&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Years facet names&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;For the first two years apparently Facebook was only used for group chat
+&lt;ul&gt;
+&lt;li&gt;MSN hype was still strong&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Robert, Lucy and Hanna are my most talked to buds&lt;/li&gt;
+&lt;li&gt;Bella’s cropped up in the last year. Hi Bella!&lt;/li&gt;
+&lt;li&gt;Old housemates Connor and Tass dropped out. Camilla made a come back when I met up with her this year. Hi Camilla!&lt;/li&gt;
+&lt;li&gt;Spoke to Steve a lot during 1st and 2nd year after which he dropped out. Hi Steve!&lt;/li&gt;
+&lt;li&gt;2012 and 2013 were some kind of rampage&lt;/li&gt;
+&lt;li&gt;My main group chat started in 2015&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_per_year-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;names-facet-years&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Names facet years&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Caroline’s is pretty interesting - we move from private chat to group messages pretty steadily&lt;/li&gt;
+&lt;li&gt;I talk to Nina online almost exclusively in a group chat
+&lt;ul&gt;
+&lt;li&gt;She didn’t seem to care about us during university&lt;/li&gt;
+&lt;li&gt;No bar is an overstatement, but she wasn’t in the top 20 people I spoke to per year for those years, and the group chat makes up a good amount of that&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Paul’s group engagement is essentially some perfect exponential&lt;/li&gt;
+&lt;li&gt;Luke’s facebook engagement jumped when he moved to the States&lt;/li&gt;
+&lt;li&gt;Isabel and I took a random 3 year break
+&lt;ul&gt;
+&lt;li&gt;We talked a surprising amount during second year!&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_per_person-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;closing-notes&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Closing Notes&lt;/h3&gt;
+&lt;p&gt;More to come! Plans I’m already working on include message/character ratios and a quick ngram analysis (a keeno may have noticed &lt;code&gt;tidytext&lt;/code&gt; sitting up there in the library calls).&lt;/p&gt;
+&lt;p&gt;This is surprisingly time consuming, even only this much has taken about 6 hours in total already!&lt;/p&gt;
+&lt;p&gt;The code will be available on github for you to run on your own data. It’s surprisingly revealing…&lt;/p&gt;
+&lt;p&gt;Stay tuned…&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/final-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;appendix&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Appendix&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;#########################################################
+# Setup and helper functions                            #
+#########################################################
+
+libs = c(
+  &amp;quot;data.table&amp;quot;, &amp;quot;XML&amp;quot;, &amp;quot;purrr&amp;quot;, &amp;quot;magrittr&amp;quot;, &amp;quot;tibble&amp;quot;, &amp;quot;tidytext&amp;quot;, &amp;quot;ggplot2&amp;quot;
+)
+
+sink = sapply(libs, purrr::quietly(library), character.only = TRUE)
+
+# A colour palette from https://www.r-bloggers.com/the-paul-tol-21-color-salute/
+palette = c(
+  &amp;quot;#771155&amp;quot;, &amp;quot;#AA4488&amp;quot;, &amp;quot;#CC99BB&amp;quot;, &amp;quot;#114477&amp;quot;, &amp;quot;#4477AA&amp;quot;, &amp;quot;#77AADD&amp;quot;, &amp;quot;#117777&amp;quot;, 
+  &amp;quot;#44AAAA&amp;quot;, &amp;quot;#77CCCC&amp;quot;, &amp;quot;#117744&amp;quot;, &amp;quot;#44AA77&amp;quot;, &amp;quot;#88CCAA&amp;quot;, &amp;quot;#777711&amp;quot;, &amp;quot;#AAAA44&amp;quot;, 
+  &amp;quot;#DDDD77&amp;quot;, &amp;quot;#774411&amp;quot;, &amp;quot;#AA7744&amp;quot;, &amp;quot;#DDAA77&amp;quot;, &amp;quot;#771122&amp;quot;, &amp;quot;#AA4455&amp;quot;, &amp;quot;#DD7788&amp;quot;
+)
+# I like it better shuffled as I&amp;#39;m red/green colour deficienct
+palette = sample(palette, length(palette), replace = FALSE)
+
+# Some random helpers
+fmt_time = &amp;quot;%A, %B %d, %Y at %I:%M%p&amp;quot;
+split_people = function(people) strsplit(people, &amp;quot;, &amp;quot;)[[1]]
+
+# The basic table
+make_dt = function(i, u, t, m) {
+  data.table(thread = i, user = u, timestamp = t, message = m)
+}
+
+#########################################################
+# Scraping initial threads from the HTML                #
+#########################################################
+
+# Read in the whole messages htm file
+html = XML::htmlTreeParse(
+  &amp;quot;~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/messages.htm&amp;quot;, 
+  useInternalNodes = TRUE
+)
+# Scrape the threads
+threads = XML::xpathSApply(html, &amp;#39;/html/body/div/div/div[@class=&amp;quot;thread&amp;quot;]&amp;#39;)
+
+# Thread metadata
+l_participants = lapply(threads, xpathSApply, &amp;#39;text()&amp;#39;, xmlValue)
+# Splits comma seperated lists of people
+l_participants = lapply(l_participants, split_people)
+# Store these in a nested table for neatness
+l_participants = purrr::map2(
+  seq_along(l_participants), l_participants, 
+  .f = ~tibble(thread = .x, people = list(.y))
+)
+dt_participants = purrr::reduce(l_participants, dplyr::bind_rows)
+dt_participants = dt_participants %&amp;gt;%
+  dplyr::rowwise() %&amp;gt;%
+  dplyr::mutate(n_people = length(people)) %&amp;gt;%
+  dplyr::mutate(convo = ifelse(n_people == 2, &amp;quot;private&amp;quot;, &amp;quot;group&amp;quot;)) %&amp;gt;%
+  setDT()
+
+dt_participants[, .(thread, n_people, convo)] %&amp;gt;% 
+  head(10)
+
+#########################################################
+# Scraping each message within the thread&amp;#39;s context     #
+# I used a save/load cheat to not have to rerun this    #
+#########################################################
+
+# xpaths
+xpath_user = &amp;#39;./div/div/span[@class=&amp;quot;user&amp;quot;]&amp;#39;
+xpath_meta = &amp;#39;./div/div/span[@class=&amp;quot;meta&amp;quot;]&amp;#39;
+xpath_msg = &amp;#39;./p&amp;#39;
+
+# Any field with useful info
+l_users = lapply(threads, xpathSApply, path = xpath_user, xmlValue)
+l_meta  = lapply(threads, xpathSApply, path = xpath_meta, xmlValue)
+l_msg   = lapply(threads, xpathSApply, path = xpath_msg,  xmlValue)
+
+# Bind into table retaining thread info
+# Cast the timestamp
+dt = pmap(.l = list(seq_along(l_users), l_users, l_meta, l_msg), make_dt)
+dt = rbindlist(dt)
+dt[, timestamp := as.POSIXct(strptime(timestamp, format = fmt_time))]
+
+# Somehow this first one is wrong. Not worth finding out why
+dt = dt[order(timestamp)][-1]
+dt[, year := lubridate::year(timestamp)]
+
+# Is the message to a group?
+dt = dt_participants[, .(thread, convo)][dt, on = &amp;quot;thread&amp;quot;]
+# save(dt, file = &amp;quot;~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/dt.rda&amp;quot;)
+# load(    file = &amp;quot;~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/dt.rda&amp;quot;)
+
+dt %&amp;gt;%
+  `[`(sample(1:.N, 20), -&amp;quot;message&amp;quot;) %&amp;gt;%
+  `[`(, .(thread, year, timestamp, user, message = &amp;quot;hidden&amp;quot;)) %&amp;gt;% 
+  head(10)
+
+#########################################################
+# Quick plot messages per year                          #
+#########################################################
+
+qplot(year, N, data = dt[, .N, year],
+      geom = &amp;quot;col&amp;quot;,
+      main = &amp;quot;Messages per year&amp;quot;, xlab = &amp;quot;Year&amp;quot;, ylab = &amp;quot;Count&amp;quot;) +
+  theme_minimal()
+
+#########################################################
+# Scrape out messy names to manually fix in csv         #
+#########################################################
+
+# Sadly you have to edit this csv by hand for best results of combining aliases
+# I could ping Facebook but given I have to manually change nicknames I did the
+# top 100 on the csv which took ~5 mins
+dt_users = dt[, .N, user][order(-N)]
+dt_users[, url := stringr::str_extract(user, &amp;quot;[0-9]+&amp;quot;)]
+dt_users[, url := paste0(&amp;quot;www.facebook.com/&amp;quot;, url)]
+dt_users %&amp;gt;% write.csv(&amp;quot;~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/names.csv&amp;quot;)
+
+# Join on the aliases so I can group people messages from the same people
+# Only use first name in plots incase any m8s don&amp;#39;t want their full name shown
+dt_users = fread(&amp;quot;~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/names_edit.csv&amp;quot;)
+dt_users[, display_name := strsplit(name, &amp;quot; &amp;quot;)[[1]][1], V1]
+dt_users[stringr::str_detect(display_name, &amp;quot;@facebook&amp;quot;), display_name := &amp;quot;Deleted&amp;quot;]
+dt = dt_users[, .(user, name, display_name)][dt, on = &amp;quot;user&amp;quot;]
+
+#########################################################
+# Plot to show who I spoke to most per year             #
+#########################################################
+
+# Look at most talked to people per year
+dt_per_year = dt[name != &amp;quot;Akhil Nair&amp;quot;, .N, .(convo, year, display_name, name)][order(year, -N), head(.SD, 20), .(year)]
+dt_per_year = dt_per_year[year &amp;gt; 2008]
+dt_per_year[, year := factor(year, levels = 2009:lubridate::year(Sys.Date()))]
+dt_per_year = dt_per_year[, .(Infrequent = .N), name][Infrequent &amp;lt; 3][dt_per_year, on = &amp;quot;name&amp;quot;]
+dt_per_year[, Infrequent := !is.na(Infrequent)]
+dt_per_year[, Infrequent := ifelse(Infrequent == TRUE, &amp;quot;True&amp;quot;, &amp;quot;False&amp;quot;)]
+dt_per_year[, convo := factor(convo, levels = c(&amp;quot;group&amp;quot;, &amp;quot;private&amp;quot;))]
+
+# Already we can see a fun graph
+ggplot(dt_per_year) +
+  geom_col(
+    aes(
+      x = reorder(display_name, -N),
+      y = N,
+      fill = Infrequent,
+      alpha = convo
+    )
+  ) +
+  theme_minimal() +
+  theme(
+    text = element_text(size = 16),
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
+  ) +
+  facet_wrap(~year, scales = &amp;#39;free&amp;#39;, ncol = 2) +
+  labs(
+    title = &amp;#39;Most common people per year&amp;#39;,
+    x = &amp;#39;Name&amp;#39;,
+    y = &amp;#39;Count&amp;#39;
+  ) +
+  scale_fill_manual(values = c(&amp;quot;steelblue&amp;quot;, &amp;quot;#666666&amp;quot;)) +
+  scale_alpha_discrete(range = c(0.5, 1)) 
+
+#########################################################
+# Plot to show how I spoke to people through the years  #
+#########################################################
+
+label_names = dt_users[, display_name]
+names(label_names) = dt_users[, name]
+
+# How else do you readably chain data.table...?
+idx_known4years = dt_per_year %&amp;gt;%
+  `[`(, .(name, year)) %&amp;gt;% 
+  unique() %&amp;gt;% 
+  `[`(, .N, name) %&amp;gt;% 
+  `[`(N &amp;gt; 4, name)
+
+ggplot(dt_per_year[name %in% idx_known4years]) +
+  geom_col(
+    aes(
+      x = year,
+      y = N,
+      alpha = convo
+    ),
+    fill = &amp;quot;steelblue&amp;quot;
+  ) +
+  theme_minimal() +
+  theme(
+    text = element_text(size = 16),
+    axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
+  ) +
+  facet_wrap(~name, scales = &amp;#39;free&amp;#39;, ncol = 2, 
+             labeller = as_labeller(label_names[names(label_names) %in% idx_known4years])) +
+  labs(
+    title = &amp;#39;Most common people per year&amp;#39;,
+    x = &amp;#39;Name&amp;#39;,
+    y = &amp;#39;Count&amp;#39;
+  ) +
+  scale_alpha_discrete(range = c(0.5, 1)) + 
+  scale_x_discrete(drop = FALSE)
+
+#########################################################
+# Plot I was working on when I got bored                #
+#########################################################
+
+idx_user = dt[, .N, name][order(-N)][1:21, name]
+dt[, convo := factor(convo, levels = c(&amp;quot;group&amp;quot;, &amp;quot;private&amp;quot;))]
+
+ggplot(dt[name %in% idx_user][name != &amp;quot;Akhil Nair&amp;quot; &amp;amp; year &amp;gt;= 2010]) +
+  geom_histogram(aes(x = timestamp, fill = display_name, alpha = convo), 
+                 binwidth = 60 * 60 * 24 * 14) +
+  facet_grid(name ~ ., scale = &amp;quot;free_y&amp;quot;, space = &amp;quot;free_y&amp;quot;) +
+  theme_minimal() +
+  theme(
+    text = element_text(size = 16),
+    strip.text.y = element_text(angle = 0),
+    axis.text.y = element_blank()
+  ) +
+  labs(
+    x = &amp;quot;Time&amp;quot;,
+    y = &amp;quot;Message Count&amp;quot;,
+    Title = &amp;quot;Facebook Messages sent since I got Facebook Messenger&amp;quot;,
+    subtitle = &amp;quot;Top 20 people shown&amp;quot;
+  ) +
+  scale_fill_manual(values = palette) +
+  scale_alpha_discrete(range = c(0.5, 1))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>Avocados on Racism</title>
-      <link>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</link>
+      <link>/portfolio/2017-04-09-avocados-on-racism/</link>
       <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</guid>
+      <guid>/portfolio/2017-04-09-avocados-on-racism/</guid>
       <description>&lt;p&gt;&lt;em&gt;So white people pay attention to it.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism_files/figure-html/density-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-04-09-avocados-on-racism_files/figure-html/density-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;and to pre-empt the next usual question&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism_files/figure-html/resolve-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-04-09-avocados-on-racism_files/figure-html/resolve-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;The size of this region is facetious&lt;/li&gt;
 &lt;/ol&gt;
@@ -140,49 +487,13 @@ ggplot(tbl_resolve, aes(order = `Shit from`)) +
     
     <item>
       <title>This is a plain md</title>
-      <link>https://akhilnairamey.github.io/portfolio/Renamed-file/</link>
+      <link>/portfolio/Renamed-file/</link>
       <pubDate>Sat, 05 Nov 2016 20:02:19 +0530</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/Renamed-file/</guid>
+      <guid>/portfolio/Renamed-file/</guid>
       <description>&lt;p&gt;Some blurb text&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.&lt;/p&gt;
-
-&lt;p&gt;A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.&lt;/li&gt;
-&lt;li&gt;Aliquam tincidunt mauris eu risus.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn&amp;rsquo;t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;header-level-2&#34;&gt;Header Level 2&lt;/h2&gt;
-
-&lt;p&gt;Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.&lt;/p&gt;
-
-&lt;p&gt;The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn&amp;rsquo;t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.&lt;/li&gt;
-&lt;li&gt;Aliquam tincidunt mauris eu risus.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Item with image</title>
-      <link>https://akhilnairamey.github.io/portfolio/work1/</link>
-      <pubDate>Sat, 05 Nov 2016 20:23:59 +0530</pubDate>
-      
-      <guid>https://akhilnairamey.github.io/portfolio/work1/</guid>
-      <description>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
-&lt;/p&gt;
 
 &lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.&lt;/p&gt;
 
