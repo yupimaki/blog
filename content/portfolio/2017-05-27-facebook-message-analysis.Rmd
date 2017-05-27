@@ -1,25 +1,31 @@
 ---
-title: "Facebook Message Analysis"
-output: html_document
+title: Facebook Message Analysis
+author: ~
+date: '2017-05-27'
+slug: ''
+categories: []
+tags: []
+subtitle: "#nonewfriends"
+image: "img/portfolio/facebook-message-analysis/facebook-messenger.jpg"
+description: "Data analysis on me because apparently I'm a narcissist"
 ---
 
-Turns out Facebook messenger gives me a fairly solid dataset since 2009.  If you
-download your own through settings on your profile, you should be able to run 
-the same graphs off from your own data.
+Let's try and find out for ourselves just how much Facebook knows about me, given
+I waived my privacy to them back in 2009.  If you download your own through settings 
+on your profile and have some familiarity with R, you should be able to run the same 
+graphs off from your own data. The markdown file is available on my github page and 
+there's a code dump as the appendix.
 
 ```{r setup, echo=FALSE}
-# It is unclear why blank lines are stripped from code chunks
+#########################################################
+# Setup and helper functions                            #
+#########################################################
 
-library(XML)
-# wow, can u not
-suppressPackageStartupMessages(library(purrr))
-suppressPackageStartupMessages(library(data.table))
-suppressPackageStartupMessages(library(magrittr))
-library(tibble)
-library(tidytext)
-library(ggplot2)
-# Helpers.r included as appendix
-source("helpers.r")
+libs = c(
+  "data.table", "XML", "purrr", "magrittr", "tibble", "tidytext", "ggplot2"
+)
+
+sink = sapply(libs, purrr::quietly(library), character.only = TRUE)
 
 # A colour palette from https://www.r-bloggers.com/the-paul-tol-21-color-salute/
 palette = c(
@@ -27,14 +33,18 @@ palette = c(
   "#44AAAA", "#77CCCC", "#117744", "#44AA77", "#88CCAA", "#777711", "#AAAA44", 
   "#DDDD77", "#774411", "#AA7744", "#DDAA77", "#771122", "#AA4455", "#DD7788"
 )
+# I like it better shuffled as I'm red/green colour deficienct
 palette = sample(palette, length(palette), replace = FALSE)
 
+# Some random helpers
 fmt_time = "%A, %B %d, %Y at %I:%M%p"
+split_people = function(people) strsplit(people, ", ")[[1]]
 
 # The basic table
 make_dt = function(i, u, t, m) {
   data.table(thread = i, user = u, timestamp = t, message = m)
 }
+
 ```
 
 First the data needs to be rvested (hah, good one Hadley) from the downloaded
@@ -51,12 +61,18 @@ First the data needs to be rvested (hah, good one Hadley) from the downloaded
 
 ## Scraping
 
-Xpaths make this pretty easy. What isn't easy is keeping everything less than 
-`80` characters.
+Xpaths make this pretty easy. Cheers then xpaths.
 
 ```{r scraping, echo=FALSE}
+#########################################################
+# Scraping initial threads from the HTML                #
+#########################################################
+
 # Read in the whole messages htm file
-html = XML::htmlTreeParse("messages.htm", useInternalNodes = TRUE)
+html = XML::htmlTreeParse(
+  "~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/messages.htm", 
+  useInternalNodes = TRUE
+)
 # Scrape the threads
 threads = XML::xpathSApply(html, '/html/body/div/div/div[@class="thread"]')
 
@@ -75,71 +91,100 @@ dt_participants = dt_participants %>%
   dplyr::mutate(n_people = length(people)) %>%
   dplyr::mutate(convo = ifelse(n_people == 2, "private", "group")) %>%
   setDT()
+
 ```
 
 The first thing we can scrap is a table that is boring to look at, but is useful
 to identify participants of a conversation.  
 Any thread with more than 2 participants is a group thread.
-The rest of the analysis can be done grouped by thread to keep that separation
+The rest of the analysis can be done grouped by thread to keep that separation.
 
-```{r participants}
-# Not showing people as data.tables make list-columns hella ugly
-DT::datatable(dt_participants[, .(thread, n_people, convo)])
+I tried a couple of `htmlwidgets` options to display this table but they didn't work
+instantly (and my god iframes are ugly). This actually looks fine though, in my
+opinion.
+
+```{r, message=FALSE, warning=FALSE}
+dt_participants[, .(thread, n_people, convo)] %>% 
+  head(10)
+
 ```
 
 It's then easy to use xpaths to grab the few fields offered to us
+
  - The sender of the message
- - The meta (which is just the timestamp [without seconds])
+ - The meta (which is just the timestamp without seconds)
  - The actual message
 
-```{r scrape_data, warning=FALSE, echo=FALSE, cache=TRUE}
+```{r scrape_data, warning=FALSE, echo=FALSE}
+#########################################################
+# Scraping each message within the thread's context     #
+# I used a save/load cheat to not have to rerun this    #
+#########################################################
+
 # xpaths
-# xpath_user = './div/div/span[@class="user"]'
-# xpath_meta = './div/div/span[@class="meta"]'
-# xpath_msg = './p'
-# # Any field with useful info
-# l_users = lapply(threads, xpathSApply, path = xpath_user, xmlValue)
-# l_meta  = lapply(threads, xpathSApply, path = xpath_meta, xmlValue)
-# l_msg   = lapply(threads, xpathSApply, path = xpath_msg,  xmlValue)
-# # Bind into table retaining thread info
-# # Cast the timestamp
-# dt = pmap(.l = list(seq_along(l_users), l_users, l_meta, l_msg), make_dt)
-# dt = rbindlist(dt)
-# dt[, timestamp := as.POSIXct(strptime(timestamp, format = fmt_time))]
-# # Somehow this first one is wrong. Not worth finding out why
-# dt = dt[order(timestamp)][-1]
-# dt[, year := lubridate::year(timestamp)]
-# dt = dt_participants[, .(thread, convo)][dt, on = "thread"]
-# save(dt, file = "cache/main_table.rda")
-load(    file = "cache/main_table.rda")
+xpath_user = './div/div/span[@class="user"]'
+xpath_meta = './div/div/span[@class="meta"]'
+xpath_msg = './p'
+
+# Any field with useful info
+l_users = lapply(threads, xpathSApply, path = xpath_user, xmlValue)
+l_meta  = lapply(threads, xpathSApply, path = xpath_meta, xmlValue)
+l_msg   = lapply(threads, xpathSApply, path = xpath_msg,  xmlValue)
+
+# Bind into table retaining thread info
+# Cast the timestamp
+dt = pmap(.l = list(seq_along(l_users), l_users, l_meta, l_msg), make_dt)
+dt = rbindlist(dt)
+dt[, timestamp := as.POSIXct(strptime(timestamp, format = fmt_time))]
+
+# Somehow this first one is wrong. Not worth finding out why
+dt = dt[order(timestamp)][-1]
+dt[, year := lubridate::year(timestamp)]
+
+# Is the message to a group?
+dt = dt_participants[, .(thread, convo)][dt, on = "thread"]
+# save(dt, file = "~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/dt.rda")
+# load(    file = "~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/dt.rda")
+
 ```
 
-And the nice table we're left with is... (ps, I'm removing my messages)
+And the nice table we're left with is...
 
-```{r fbtable, warning=FALSE}
-DT::datatable(dt[, -"message"][, .(thread, year, timestamp, user, message = "hidden")])
+```{r, message=FALSE, warning=FALSE}
+dt %>%
+    `[`(sample(1:.N, 20), -"message") %>% 
+    `[`(, id := 1:.N) %>%
+    `[`(, .(thread, year, timestamp, user = strsplit(user, " ")[[1]][1], message = "hidden"), id) %>% 
+    head(10)
+
 ```
 
-So go nuts.  
+You may note that I have removed my messages. If anyone wants to offer up
+anything they actually wrote back in 2009, be my guest.
 
 ### A free graph.
 
 It's pretty easy to see where I stopped using MSN messenger.
 
-```{r plot_msg_per_year, echo=FALSE, fig.height=4, fig.align='center'}
+```{r plot_msg_per_year, echo=FALSE, fig.height=3.5, fig.align='center'}
+#########################################################
+# Quick plot messages per year                          #
+#########################################################
+
 qplot(year, N, data = dt[, .N, year],
       geom = "col",
       main = "Messages per year", xlab = "Year", ylab = "Count") +
   theme_minimal()
+
 ```
 
 ## Users
 
-This bit was extremely annoying as I had to actually do something by hand which
+This bit was extremely annoying as I had to actually do something by hand, which
 involved aliasing everyone who has changed their name.  I also matched up the 
 facebook IDs to the standardised name by hand as I was already going in.  I did
-this for the top 100 people I spoke to, and also the top 20 people who spoke to 
-me per year 
+this for the top 100 people I spoke to overall, and also the top 20 people who I 
+spoke to per year. 
 
  - Top 100 people: `dt[, .N, user][order(-N)][1:100]`
  - Top 20 per year: `dt[, .N, .(year, user)][order(-N), head(.SD, 20), year]`
@@ -147,17 +192,26 @@ me per year
 People who were quite interesting to me here were people who I'd only frequently
 spoken to in 1 or 2 years.  That's not to say my #dayones aren't interesting.
 
-```{r aliasusers, echo=FALSE}
+```{r alias_users, echo=FALSE}
+#########################################################
+# Scrape out messy names to manually fix in csv         #
+#########################################################
+
 # Sadly you have to edit this csv by hand for best results of combining aliases
 # I could ping Facebook but given I have to manually change nicknames I did the
 # top 100 on the csv which took ~5 mins
 dt_users = dt[, .N, user][order(-N)]
 dt_users[, url := stringr::str_extract(user, "[0-9]+")]
 dt_users[, url := paste0("www.facebook.com/", url)]
-dt_users %>% write.csv("names.csv")
+dt_users %>% write.csv("~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/names.csv")
+
 # Join on the aliases so I can group people messages from the same people
-dt_users = fread("names_edit.csv")
-dt = dt_users[, .(user, name)][dt, on = "user"]
+# Only use first name in plots incase any m8s don't want their full name shown
+dt_users = fread("~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/names_edit.csv")
+dt_users[, display_name := strsplit(name, " ")[[1]][1], V1]
+dt_users[stringr::str_detect(display_name, "@facebook"), display_name := "Deleted"]
+dt = dt_users[, .(user, name, display_name)][dt, on = "user"]
+
 ```
 
 ### Years facet names
@@ -166,16 +220,20 @@ dt = dt_users[, .(user, name)][dt, on = "user"]
     - MSN hype was still strong
  - Robert, Lucy and Hanna are my most talked to buds
  - Bella's cropped up in the last year. Hi Bella!
- - Old housemates Connor and Tass dropped out. Camilla made a comes back when I
+ - Old housemates Connor and Tass dropped out. Camilla made a come back when I
  met up with her this year. Hi Camilla!
  - Spoke to Steve a lot during 1st and 2nd year after which he dropped out. 
  Hi Steve!
  - 2012 and 2013 were some kind of rampage
  - My main group chat started in 2015
 
-```{r plot_per_year, echo=FALSE, fig.width=14, fig.height=19, fig.align='center'}
+```{r plot_per_year, echo=FALSE, fig.width=10, fig.height=16, fig.align='center'}
+#########################################################
+# Plot to show who I spoke to most per year             #
+#########################################################
+
 # Look at most talked to people per year
-dt_per_year = dt[name != "Akhil Nair", .N, .(convo, year, name)][order(year, -N), head(.SD, 20), .(year)]
+dt_per_year = dt[name != "Akhil Nair", .N, .(convo, year, display_name, name)][order(year, -N), head(.SD, 20), .(year)]
 dt_per_year = dt_per_year[year > 2008]
 dt_per_year[, year := factor(year, levels = 2009:lubridate::year(Sys.Date()))]
 dt_per_year = dt_per_year[, .(Infrequent = .N), name][Infrequent < 3][dt_per_year, on = "name"]
@@ -187,7 +245,7 @@ dt_per_year[, convo := factor(convo, levels = c("group", "private"))]
 ggplot(dt_per_year) +
   geom_col(
     aes(
-      x = reorder(name, -N),
+      x = reorder(display_name, -N),
       y = N,
       fill = Infrequent,
       alpha = convo
@@ -206,6 +264,7 @@ ggplot(dt_per_year) +
   ) +
   scale_fill_manual(values = c("steelblue", "#666666")) +
   scale_alpha_discrete(range = c(0.5, 1)) 
+
 ```
 
 ### Names facet years
@@ -217,12 +276,19 @@ ggplot(dt_per_year) +
     - No bar is an overstatement, but she wasn't in the top 20 people I spoke to 
    per year for those years, and the group chat makes up a good amount of that
  - Paul's group engagement is essentially some perfect exponential
- - Luke Facebook engagement jumped when he moved to the States
+ - Luke's facebook engagement jumped when he moved to the States
  - Isabel and I took a random 3 year break
     - We talked a surprising amount during second year!
 
-```{r plot_per_person, echo=FALSE, fig.width=14, fig.height=11, fig.align='center'}
-# A hilarious way I just found to make data.table chains more manageable...
+```{r plot_per_person, echo=FALSE, fig.width=10, fig.height=16, fig.align='center'}
+#########################################################
+# Plot to show how I spoke to people through the years  #
+#########################################################
+
+label_names = dt_users[, display_name]
+names(label_names) = dt_users[, name]
+
+# How else do you readably chain data.table...?
 idx_known4years = dt_per_year %>%
   `[`(, .(name, year)) %>% 
   unique() %>% 
@@ -243,7 +309,8 @@ ggplot(dt_per_year[name %in% idx_known4years]) +
     text = element_text(size = 16),
     axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)
   ) +
-  facet_wrap(~name, scales = 'free', ncol = 3) +
+  facet_wrap(~name, scales = 'free', ncol = 2, 
+             labeller = as_labeller(label_names[names(label_names) %in% idx_known4years])) +
   labs(
     title = 'Most common people per year',
     x = 'Name',
@@ -251,6 +318,7 @@ ggplot(dt_per_year[name %in% idx_known4years]) +
   ) +
   scale_alpha_discrete(range = c(0.5, 1)) + 
   scale_x_discrete(drop = FALSE)
+
 ```
 
 ### Closing Notes
@@ -267,18 +335,23 @@ surprisingly revealing...
 
 Stay tuned...
 
-```{r final, echo=FALSE, fig.align='center', fig.height=15, fig.width=14}
+```{r final, echo=FALSE, fig.align='center', fig.height=12, fig.width=10}
+#########################################################
+# Plot I was working on when I got bored                #
+#########################################################
+
 idx_user = dt[, .N, name][order(-N)][1:21, name]
 dt[, convo := factor(convo, levels = c("group", "private"))]
 
-ggplot(dt[name %in% idx_user][name != "Akhil Nair"]) +
-  geom_histogram(aes(x = timestamp, fill = name, alpha = convo), 
+ggplot(dt[name %in% idx_user][name != "Akhil Nair" & year >= 2010]) +
+  geom_histogram(aes(x = timestamp, fill = display_name, alpha = convo), 
                  binwidth = 60 * 60 * 24 * 14) +
   facet_grid(name ~ ., scale = "free_y", space = "free_y") +
   theme_minimal() +
   theme(
     text = element_text(size = 16),
-    strip.text.y = element_text(angle = 0)
+    strip.text.y = element_text(angle = 0),
+    axis.text.y = element_blank()
   ) +
   labs(
     x = "Time",
@@ -288,4 +361,10 @@ ggplot(dt[name %in% idx_user][name != "Akhil Nair"]) +
   ) +
   scale_fill_manual(values = palette) +
   scale_alpha_discrete(range = c(0.5, 1))
+
+```
+
+## Appendix
+
+```{r, ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
 ```
