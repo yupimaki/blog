@@ -56,17 +56,17 @@ Any thread with more than 2 participants is a group thread. The rest of the anal
     `[`(, id := 1:.N) %&gt;%
     `[`(, .(thread, year, timestamp, user = strsplit(user, &quot; &quot;)[[1]][1], message = &quot;hidden&quot;), id) %&gt;% 
     head(10)</code></pre>
-<pre><code>##     id thread year           timestamp    user message
-##  1:  1    342 2011 2011-07-29 22:32:00   Akhil  hidden
-##  2:  2    373 2012 2012-03-27 18:08:00   Akhil  hidden
-##  3:  3    500 2012 2012-08-08 21:46:00   Hanna  hidden
-##  4:  4    543 2014 2014-04-21 22:12:00   Akhil  hidden
-##  5:  5    500 2012 2012-11-27 00:29:00   Hanna  hidden
-##  6:  6    249 2012 2012-08-07 21:21:00  Stuart  hidden
-##  7:  7    500 2011 2011-09-11 23:22:00   Hanna  hidden
-##  8:  8    517 2012 2012-07-15 22:10:00   Akhil  hidden
-##  9:  9    341 2015 2015-04-01 21:50:00   Akhil  hidden
-## 10: 10    412 2014 2014-03-09 01:22:00 Kathryn  hidden</code></pre>
+<pre><code>##     id thread year           timestamp     user message
+##  1:  1    511 2012 2012-12-28 01:36:00    Hanna  hidden
+##  2:  2     58 2013 2013-08-01 13:36:00    Akhil  hidden
+##  3:  3    258 2015 2015-09-14 22:03:00     Biyi  hidden
+##  4:  4    500 2012 2012-06-28 00:14:00    Akhil  hidden
+##  5:  5     21 2013 2013-03-13 22:26:00    Akhil  hidden
+##  6:  6    485 2014 2014-11-03 19:37:00      Joe  hidden
+##  7:  7    557 2016 2016-09-21 22:46:00    Akhil  hidden
+##  8:  8    258 2013 2013-08-26 02:07:00    Akhil  hidden
+##  9:  9    514 2015 2015-03-01 12:08:00 Caroline  hidden
+## 10: 10    357 2011 2011-08-16 20:01:00    Akhil  hidden</code></pre>
 <p>You may note that I have removed my messages. If anyone wants to offer up anything they actually wrote back in 2009, be my guest.</p>
 <div id="a-free-graph." class="section level3">
 <h3>A free graph.</h3>
@@ -341,7 +341,8 @@ ggplot(dt[name %in% idx_user][name != &quot;Akhil Nair&quot; &amp; year &gt;= 20
   theme(
     text = element_text(size = 16),
     strip.text.y = element_text(angle = 0),
-    axis.text.y = element_blank()
+    axis.text.y = element_blank(),
+    legend.position = &quot;none&quot;
   ) +
   labs(
     x = &quot;Time&quot;,
