@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Akhil Nair</title>
-    <link>https://akhilnairamey.github.io/index.xml</link>
+    <link>/index.xml</link>
     <description>Recent content on Akhil Nair</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
     <copyright>&amp;copy;2017 Akhil Nair</copyright>
     <lastBuildDate>Sat, 05 Nov 2016 20:02:19 +0530</lastBuildDate>
-    <atom:link href="https://akhilnairamey.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>This is a plain md</title>
-      <link>https://akhilnairamey.github.io/portfolio/Renamed-file/</link>
+      <link>/portfolio/Renamed-file/</link>
       <pubDate>Sat, 05 Nov 2016 20:02:19 +0530</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/Renamed-file/</guid>
+      <guid>/portfolio/Renamed-file/</guid>
       <description>&lt;p&gt;Some blurb text&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
@@ -49,10 +49,10 @@
     
     <item>
       <title>Facebook Message Analysis</title>
-      <link>https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis/</link>
+      <link>/portfolio/2017-05-27-facebook-message-analysis/</link>
       <pubDate>Sat, 27 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis/</guid>
+      <guid>/portfolio/2017-05-27-facebook-message-analysis/</guid>
       <description>&lt;p&gt;Let’s try and find out for ourselves just how much Facebook knows about me, given I waived my privacy to them back in 2009. If you download your own through settings on your profile and have some familiarity with R, you should be able to run the same graphs off from your own data. The markdown file is available on my github page and there’s a code dump as the appendix.&lt;/p&gt;
 &lt;p&gt;First the data needs to be rvested (hah, good one Hadley) from the downloaded &lt;code&gt;messages.htm&lt;/code&gt; file. This initially confused me but it turns out:&lt;/p&gt;
 &lt;ul&gt;
@@ -70,7 +70,7 @@
 &lt;div id=&#34;scraping&#34; class=&#34;section level2&#34;&gt;
 &lt;h2&gt;Scraping&lt;/h2&gt;
 &lt;p&gt;Xpaths make this pretty easy. Cheers then xpaths.&lt;/p&gt;
-&lt;p&gt;The first thing we can scrap is a table that is boring to look at, but is useful to identify participants of a conversation.&lt;br /&gt;
+&lt;p&gt;The first thing we can scrape is a table that is boring to look at, but is useful to identify participants of a conversation.&lt;br /&gt;
 Any thread with more than 2 participants is a group thread. The rest of the analysis can be done grouped by thread to keep that separation.&lt;/p&gt;
 &lt;p&gt;I tried a couple of &lt;code&gt;htmlwidgets&lt;/code&gt; options to display this table but they didn’t work instantly (and my god iframes are ugly). This actually looks fine though, in my opinion.&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dt_participants[, .(thread, n_people, convo)] %&amp;gt;% 
@@ -94,25 +94,26 @@ Any thread with more than 2 participants is a group thread. The rest of the anal
 &lt;/ul&gt;
 &lt;p&gt;And the nice table we’re left with is…&lt;/p&gt;
 &lt;pre class=&#34;r&#34;&gt;&lt;code&gt;dt %&amp;gt;%
-  `[`(sample(1:.N, 20), -&amp;quot;message&amp;quot;) %&amp;gt;%
-  `[`(, .(thread, year, timestamp, user, message = &amp;quot;hidden&amp;quot;)) %&amp;gt;% 
-  head(10)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##     thread year           timestamp                   user message
-##  1:    140 2014 2014-01-08 01:45:00             Akhil Nair  hidden
-##  2:    511 2012 2012-12-26 01:31:00          Hanna Greeman  hidden
-##  3:    510 2012 2012-08-01 21:29:00             Akhil Nair  hidden
-##  4:    518 2013 2013-06-22 13:12:00             Akhil Nair  hidden
-##  5:    511 2017 2017-03-23 22:20:00 731072799@facebook.com  hidden
-##  6:    514 2011 2011-12-17 21:48:00        Caroline Hughes  hidden
-##  7:    517 2012 2012-12-30 23:08:00         Robert Hickman  hidden
-##  8:    519 2014 2014-07-28 12:20:00             Akhil Nair  hidden
-##  9:    254 2016 2016-02-28 21:51:00             Akhil Nair  hidden
-## 10:     21 2013 2013-03-08 18:15:00             Akhil Nair  hidden&lt;/code&gt;&lt;/pre&gt;
+    `[`(sample(1:.N, 20), -&amp;quot;message&amp;quot;) %&amp;gt;% 
+    `[`(, id := 1:.N) %&amp;gt;%
+    `[`(, .(thread, year, timestamp, user = strsplit(user, &amp;quot; &amp;quot;)[[1]][1], message = &amp;quot;hidden&amp;quot;), id) %&amp;gt;% 
+    head(10)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##     id thread year           timestamp    user message
+##  1:  1    342 2011 2011-07-29 22:32:00   Akhil  hidden
+##  2:  2    373 2012 2012-03-27 18:08:00   Akhil  hidden
+##  3:  3    500 2012 2012-08-08 21:46:00   Hanna  hidden
+##  4:  4    543 2014 2014-04-21 22:12:00   Akhil  hidden
+##  5:  5    500 2012 2012-11-27 00:29:00   Hanna  hidden
+##  6:  6    249 2012 2012-08-07 21:21:00  Stuart  hidden
+##  7:  7    500 2011 2011-09-11 23:22:00   Hanna  hidden
+##  8:  8    517 2012 2012-07-15 22:10:00   Akhil  hidden
+##  9:  9    341 2015 2015-04-01 21:50:00   Akhil  hidden
+## 10: 10    412 2014 2014-03-09 01:22:00 Kathryn  hidden&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;You may note that I have removed my messages. If anyone wants to offer up anything they actually wrote back in 2009, be my guest.&lt;/p&gt;
 &lt;div id=&#34;a-free-graph.&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;A free graph.&lt;/h3&gt;
 &lt;p&gt;It’s pretty easy to see where I stopped using MSN messenger.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_msg_per_year-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_msg_per_year-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;users&#34; class=&#34;section level2&#34;&gt;
@@ -137,7 +138,7 @@ Any thread with more than 2 participants is a group thread. The rest of the anal
 &lt;li&gt;2012 and 2013 were some kind of rampage&lt;/li&gt;
 &lt;li&gt;My main group chat started in 2015&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_per_year-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_per_year-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;names-facet-years&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Names facet years&lt;/h3&gt;
@@ -155,7 +156,7 @@ Any thread with more than 2 participants is a group thread. The rest of the anal
 &lt;li&gt;We talked a surprising amount during second year!&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_per_person-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_per_person-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;closing-notes&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Closing Notes&lt;/h3&gt;
@@ -163,7 +164,7 @@ Any thread with more than 2 participants is a group thread. The rest of the anal
 &lt;p&gt;This is surprisingly time consuming, even only this much has taken about 6 hours in total already!&lt;/p&gt;
 &lt;p&gt;The code will be available on github for you to run on your own data. It’s surprisingly revealing…&lt;/p&gt;
 &lt;p&gt;Stay tuned…&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/final-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/final-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;appendix&#34; class=&#34;section level2&#34;&gt;
@@ -258,9 +259,10 @@ dt = dt_participants[, .(thread, convo)][dt, on = &amp;quot;thread&amp;quot;]
 # load(    file = &amp;quot;~/blog/blogdown_data/2017-05-27-facebook-message-analysis_files/dt.rda&amp;quot;)
 
 dt %&amp;gt;%
-  `[`(sample(1:.N, 20), -&amp;quot;message&amp;quot;) %&amp;gt;%
-  `[`(, .(thread, year, timestamp, user, message = &amp;quot;hidden&amp;quot;)) %&amp;gt;% 
-  head(10)
+    `[`(sample(1:.N, 20), -&amp;quot;message&amp;quot;) %&amp;gt;% 
+    `[`(, id := 1:.N) %&amp;gt;%
+    `[`(, .(thread, year, timestamp, user = strsplit(user, &amp;quot; &amp;quot;)[[1]][1], message = &amp;quot;hidden&amp;quot;), id) %&amp;gt;% 
+    head(10)
 
 #########################################################
 # Quick plot messages per year                          #
@@ -375,7 +377,8 @@ dt[, convo := factor(convo, levels = c(&amp;quot;group&amp;quot;, &amp;quot;priv
 ggplot(dt[name %in% idx_user][name != &amp;quot;Akhil Nair&amp;quot; &amp;amp; year &amp;gt;= 2010]) +
   geom_histogram(aes(x = timestamp, fill = display_name, alpha = convo), 
                  binwidth = 60 * 60 * 24 * 14) +
-  facet_grid(name ~ ., scale = &amp;quot;free_y&amp;quot;, space = &amp;quot;free_y&amp;quot;) +
+  facet_grid(name ~ ., scale = &amp;quot;free_y&amp;quot;, space = &amp;quot;free_y&amp;quot;, 
+             labeller = as_labeller(label_names[names(label_names) %in% idx_user])) +
   theme_minimal() +
   theme(
     text = element_text(size = 16),
@@ -396,14 +399,14 @@ ggplot(dt[name %in% idx_user][name != &amp;quot;Akhil Nair&amp;quot; &amp;amp; y
     
     <item>
       <title>Avocados on Racism</title>
-      <link>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</link>
+      <link>/portfolio/2017-04-09-avocados-on-racism/</link>
       <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</guid>
+      <guid>/portfolio/2017-04-09-avocados-on-racism/</guid>
       <description>&lt;p&gt;&lt;em&gt;So white people pay attention to it.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism_files/figure-html/density-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-04-09-avocados-on-racism_files/figure-html/density-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;and to pre-empt the next usual question&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism_files/figure-html/resolve-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/portfolio/2017-04-09-avocados-on-racism_files/figure-html/resolve-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;The size of this region is facetious&lt;/li&gt;
 &lt;/ol&gt;
@@ -524,10 +527,10 @@ ggplot(tbl_resolve, aes(order = `Shit from`)) +
     
     <item>
       <title>Get in touch</title>
-      <link>https://akhilnairamey.github.io/contact/</link>
+      <link>/contact/</link>
       <pubDate>Sun, 06 Nov 2016 13:00:25 +0530</pubDate>
       
-      <guid>https://akhilnairamey.github.io/contact/</guid>
+      <guid>/contact/</guid>
       <description>&lt;p&gt;When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then&lt;/p&gt;
 
 &lt;p&gt;Effects present letters inquiry no an removed or friends. Desire behind latter me though in. Supposing shameless am he engrossed up additions. My possible peculiar together to. Desire so better am cannot he up before points. Remember mistaken opinions it pleasure of debating. Court front maids forty if aware their at. Chicken use are pressed removed.&lt;/p&gt;
@@ -538,17 +541,17 @@ ggplot(tbl_resolve, aes(order = `Shit from`)) +
     
     <item>
       <title>About me</title>
-      <link>https://akhilnairamey.github.io/about/</link>
+      <link>/about/</link>
       <pubDate>Sat, 05 Nov 2016 21:05:33 +0530</pubDate>
       
-      <guid>https://akhilnairamey.github.io/about/</guid>
+      <guid>/about/</guid>
       <description>
 
 &lt;p&gt;An sincerity so extremity he additions. Her yet &lt;strong&gt;there truth merit&lt;/strong&gt;. Mrs all projecting favourable now unpleasing. Son law garden chatty temper. Oh children provided to mr elegance marriage strongly. Off can admiration prosperous now devonshire diminution law.&lt;/p&gt;
 
 &lt;p&gt;Received overcame oh sensible so at an. Formed do change merely to county it. &lt;strong&gt;Am separate contempt&lt;/strong&gt; domestic to to oh. On relation my so addition branched. Put hearing cottage she norland letters equally prepare too. Replied exposed savings he no viewing as up. Soon body add him hill. No father living really people estate if. Mistake do produce beloved demesne if am pursuit.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/img/about.jpg&#34; alt=&#34;This is a placeholder picture of a human&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/about.jpg&#34; alt=&#34;This is a placeholder picture of a human&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn&amp;rsquo;t listen. She packed her seven versalia, put her initial into the belt and made herself on the way.&lt;/p&gt;
 
@@ -565,10 +568,10 @@ ggplot(tbl_resolve, aes(order = `Shit from`)) +
     
     <item>
       <title>Hello R Markdown</title>
-      <link>https://akhilnairamey.github.io/post/2015-07-23-r-rmarkdown/</link>
+      <link>/post/2015-07-23-r-rmarkdown/</link>
       <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
       
-      <guid>https://akhilnairamey.github.io/post/2015-07-23-r-rmarkdown/</guid>
+      <guid>/post/2015-07-23-r-rmarkdown/</guid>
       <description>&lt;div id=&#34;r-markdown&#34; class=&#34;section level1&#34;&gt;
 &lt;h1&gt;R Markdown&lt;/h1&gt;
 &lt;p&gt;This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see &lt;a href=&#34;http://rmarkdown.rstudio.com&#34; class=&#34;uri&#34;&gt;http://rmarkdown.rstudio.com&lt;/a&gt;.&lt;/p&gt;
@@ -602,7 +605,7 @@ pie(
   init.angle = -50, border = NA
 )&lt;/code&gt;&lt;/pre&gt;
 &lt;div class=&#34;figure&#34;&gt;&lt;span id=&#34;fig:pie&#34;&gt;&lt;/span&gt;
-&lt;img src=&#34;https://akhilnairamey.github.io/post/2015-07-23-r-rmarkdown_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
+&lt;img src=&#34;/post/2015-07-23-r-rmarkdown_files/figure-html/pie-1.png&#34; alt=&#34;A fancy pie chart.&#34; width=&#34;672&#34; /&gt;
 &lt;p class=&#34;caption&#34;&gt;
 Figure 1: A fancy pie chart.
 &lt;/p&gt;
