@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Portfolios on Akhil Nair</title>
-    <link>/portfolio/index.xml</link>
+    <link>https://akhilnairamey.github.io/portfolio/index.xml</link>
     <description>Recent content in Portfolios on Akhil Nair</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
     <copyright>&amp;copy;2017 Akhil Nair</copyright>
     <lastBuildDate>Sat, 27 May 2017 00:00:00 +0000</lastBuildDate>
-    <atom:link href="/portfolio/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://akhilnairamey.github.io/portfolio/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Facebook Message Analysis</title>
-      <link>/portfolio/2017-05-27-facebook-message-analysis/</link>
+      <link>https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis/</link>
       <pubDate>Sat, 27 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>/portfolio/2017-05-27-facebook-message-analysis/</guid>
+      <guid>https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis/</guid>
       <description>&lt;p&gt;Let’s try and find out for ourselves just how much Facebook knows about me, given I waived my privacy to them back in 2009. If you download your own through settings on your profile and have some familiarity with R, you should be able to run the same graphs off from your own data. The markdown file is available on my github page and there’s a code dump as the appendix.&lt;/p&gt;
 &lt;p&gt;First the data needs to be rvested (hah, good one Hadley) from the downloaded &lt;code&gt;messages.htm&lt;/code&gt; file. This initially confused me but it turns out:&lt;/p&gt;
 &lt;ul&gt;
@@ -61,22 +61,22 @@ Any thread with more than 2 participants is a group thread. The rest of the anal
     `[`(, id := 1:.N) %&amp;gt;%
     `[`(, .(thread, year, timestamp, user = strsplit(user, &amp;quot; &amp;quot;)[[1]][1], message = &amp;quot;hidden&amp;quot;), id) %&amp;gt;% 
     head(10)&lt;/code&gt;&lt;/pre&gt;
-&lt;pre&gt;&lt;code&gt;##     id thread year           timestamp    user message
-##  1:  1    342 2011 2011-07-29 22:32:00   Akhil  hidden
-##  2:  2    373 2012 2012-03-27 18:08:00   Akhil  hidden
-##  3:  3    500 2012 2012-08-08 21:46:00   Hanna  hidden
-##  4:  4    543 2014 2014-04-21 22:12:00   Akhil  hidden
-##  5:  5    500 2012 2012-11-27 00:29:00   Hanna  hidden
-##  6:  6    249 2012 2012-08-07 21:21:00  Stuart  hidden
-##  7:  7    500 2011 2011-09-11 23:22:00   Hanna  hidden
-##  8:  8    517 2012 2012-07-15 22:10:00   Akhil  hidden
-##  9:  9    341 2015 2015-04-01 21:50:00   Akhil  hidden
-## 10: 10    412 2014 2014-03-09 01:22:00 Kathryn  hidden&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##     id thread year           timestamp     user message
+##  1:  1    511 2012 2012-12-28 01:36:00    Hanna  hidden
+##  2:  2     58 2013 2013-08-01 13:36:00    Akhil  hidden
+##  3:  3    258 2015 2015-09-14 22:03:00     Biyi  hidden
+##  4:  4    500 2012 2012-06-28 00:14:00    Akhil  hidden
+##  5:  5     21 2013 2013-03-13 22:26:00    Akhil  hidden
+##  6:  6    485 2014 2014-11-03 19:37:00      Joe  hidden
+##  7:  7    557 2016 2016-09-21 22:46:00    Akhil  hidden
+##  8:  8    258 2013 2013-08-26 02:07:00    Akhil  hidden
+##  9:  9    514 2015 2015-03-01 12:08:00 Caroline  hidden
+## 10: 10    357 2011 2011-08-16 20:01:00    Akhil  hidden&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;You may note that I have removed my messages. If anyone wants to offer up anything they actually wrote back in 2009, be my guest.&lt;/p&gt;
 &lt;div id=&#34;a-free-graph.&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;A free graph.&lt;/h3&gt;
 &lt;p&gt;It’s pretty easy to see where I stopped using MSN messenger.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_msg_per_year-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_msg_per_year-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;users&#34; class=&#34;section level2&#34;&gt;
@@ -101,7 +101,7 @@ Any thread with more than 2 participants is a group thread. The rest of the anal
 &lt;li&gt;2012 and 2013 were some kind of rampage&lt;/li&gt;
 &lt;li&gt;My main group chat started in 2015&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_per_year-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_per_year-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;names-facet-years&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Names facet years&lt;/h3&gt;
@@ -119,7 +119,7 @@ Any thread with more than 2 participants is a group thread. The rest of the anal
 &lt;li&gt;We talked a surprising amount during second year!&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_per_person-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/plot_per_person-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div id=&#34;closing-notes&#34; class=&#34;section level3&#34;&gt;
 &lt;h3&gt;Closing Notes&lt;/h3&gt;
@@ -127,7 +127,7 @@ Any thread with more than 2 participants is a group thread. The rest of the anal
 &lt;p&gt;This is surprisingly time consuming, even only this much has taken about 6 hours in total already!&lt;/p&gt;
 &lt;p&gt;The code will be available on github for you to run on your own data. It’s surprisingly revealing…&lt;/p&gt;
 &lt;p&gt;Stay tuned…&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/final-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis_files/figure-html/final-1.png&#34; width=&#34;960&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&#34;appendix&#34; class=&#34;section level2&#34;&gt;
@@ -346,7 +346,8 @@ ggplot(dt[name %in% idx_user][name != &amp;quot;Akhil Nair&amp;quot; &amp;amp; y
   theme(
     text = element_text(size = 16),
     strip.text.y = element_text(angle = 0),
-    axis.text.y = element_blank()
+    axis.text.y = element_blank(),
+    legend.position = &amp;quot;none&amp;quot;
   ) +
   labs(
     x = &amp;quot;Time&amp;quot;,
@@ -362,14 +363,14 @@ ggplot(dt[name %in% idx_user][name != &amp;quot;Akhil Nair&amp;quot; &amp;amp; y
     
     <item>
       <title>Avocados on Racism</title>
-      <link>/portfolio/2017-04-09-avocados-on-racism/</link>
+      <link>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</link>
       <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>/portfolio/2017-04-09-avocados-on-racism/</guid>
+      <guid>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</guid>
       <description>&lt;p&gt;&lt;em&gt;So white people pay attention to it.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/portfolio/2017-04-09-avocados-on-racism_files/figure-html/density-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism_files/figure-html/density-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;and to pre-empt the next usual question&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;/portfolio/2017-04-09-avocados-on-racism_files/figure-html/resolve-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism_files/figure-html/resolve-1.png&#34; width=&#34;720&#34; /&gt;&lt;/p&gt;
 &lt;ol style=&#34;list-style-type: decimal&#34;&gt;
 &lt;li&gt;The size of this region is facetious&lt;/li&gt;
 &lt;/ol&gt;
@@ -490,10 +491,10 @@ ggplot(tbl_resolve, aes(order = `Shit from`)) +
     
     <item>
       <title>This is a plain md</title>
-      <link>/portfolio/Renamed-file/</link>
+      <link>https://akhilnairamey.github.io/portfolio/Renamed-file/</link>
       <pubDate>Sat, 05 Nov 2016 20:02:19 +0530</pubDate>
       
-      <guid>/portfolio/Renamed-file/</guid>
+      <guid>https://akhilnairamey.github.io/portfolio/Renamed-file/</guid>
       <description>&lt;p&gt;Some blurb text&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;

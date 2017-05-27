@@ -352,7 +352,8 @@ ggplot(dt[name %in% idx_user][name != "Akhil Nair" & year >= 2010]) +
   theme(
     text = element_text(size = 16),
     strip.text.y = element_text(angle = 0),
-    axis.text.y = element_blank()
+    axis.text.y = element_blank(),
+    legend.position = "none"
   ) +
   labs(
     x = "Time",
