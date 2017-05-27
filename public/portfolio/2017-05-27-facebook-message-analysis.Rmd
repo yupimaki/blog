@@ -94,7 +94,7 @@ dt_participants = dt_participants %>%
 
 ```
 
-The first thing we can scrap is a table that is boring to look at, but is useful
+The first thing we can scrape is a table that is boring to look at, but is useful
 to identify participants of a conversation.  
 Any thread with more than 2 participants is a group thread.
 The rest of the analysis can be done grouped by thread to keep that separation.
@@ -346,7 +346,8 @@ dt[, convo := factor(convo, levels = c("group", "private"))]
 ggplot(dt[name %in% idx_user][name != "Akhil Nair" & year >= 2010]) +
   geom_histogram(aes(x = timestamp, fill = display_name, alpha = convo), 
                  binwidth = 60 * 60 * 24 * 14) +
-  facet_grid(name ~ ., scale = "free_y", space = "free_y") +
+  facet_grid(name ~ ., scale = "free_y", space = "free_y", 
+             labeller = as_labeller(label_names[names(label_names) %in% idx_user])) +
   theme_minimal() +
   theme(
     text = element_text(size = 16),
