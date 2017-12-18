@@ -7,7 +7,7 @@ categories: []
 tags: []
 subtitle: "#nonewfriends"
 image: "img/portfolio/facebook-message-analysis/facebook-messenger.jpg"
-description: "Data analysis on me because apparently I'm a narcissist"
+description: "Data analysis on me"
 ---
 
 Let's try and find out for ourselves just how much Facebook knows about me, given

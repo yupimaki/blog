@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
     <copyright>&amp;copy;2017 Akhil Nair</copyright>
-    <lastBuildDate>Sat, 27 May 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 29 Jul 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://akhilnairamey.github.io/portfolio/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Simple R Webserver</title>
+      <link>https://akhilnairamey.github.io/portfolio/simple-r-webserver/</link>
+      <pubDate>Sat, 29 Jul 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://akhilnairamey.github.io/portfolio/simple-r-webserver/</guid>
+      <description>After having deployed a few websites with Nginx and understanding how to use it fairly well, I thought it might be useful to ask a question to my colleague Vergil which he found pretty funny.
+ &amp;lsquo;So&amp;hellip; what actually is a webserver?&amp;rsquo;
+ I&amp;rsquo;ve found with a few programs with especially clean interfaces (such as git), I end up being able to use a program effectively without understanding it, so I can mindlessly follow instructures and proceedures I&amp;rsquo;ve done before, but I can&amp;rsquo;t create anything.</description>
+    </item>
     
     <item>
       <title>Facebook Message Analysis</title>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Simple R Webserver</title>
+<meta name="description" content="Things I have motivation to write about">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="all,follow">
+<meta name="googlebot" content="index,follow,snippet,archive">
+<link rel="stylesheet" href="https://akhilnairamey.github.io/css/bootstrap.min.css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,300,700,400italic">
+<link rel="stylesheet" href="https://akhilnairamey.github.io/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://akhilnairamey.github.io/css/owl.carousel.css">
+<link rel="stylesheet" href="https://akhilnairamey.github.io/css/owl.theme.css">
+
+
+  <link href="https://akhilnairamey.github.io/css/style.default.css" rel="stylesheet" id="theme-stylesheet">
+
+
+<link href="https://akhilnairamey.github.io/css/custom.css" rel="stylesheet">
+<link rel="shortcut icon" href="https://akhilnairamey.github.io/img/favicon.png">
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-97307378-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+</head>
+<body>
+  <div id="all">
+      <div class="container-fluid">
+          <div class="row row-offcanvas row-offcanvas-left">
+              <div id="sidebar" class="col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas">
+  <div class="sidebar-content">
+    <h1 class="sidebar-heading"><a href="/">Akhil Nair</a></h1>
+    
+      <p class="sidebar-p">I am a data science consultant working in the rail industry with a background in Maths and Statistics</p>
+    
+      <p class="sidebar-p">Originally from London, based in London.</p>
+    
+    <ul class="sidebar-menu">
+      
+      
+        <li><a href="https://akhilnairamey.github.io/">Home</a></li>
+      
+        <li><a href="https://akhilnairamey.github.io/about/">About</a></li>
+      
+        <li><a href="https://akhilnairamey.github.io/contact/">Get in touch</a></li>
+      
+    </ul>
+    <p class="social">
+  
+  <a href="https://www.facebook.com/yupimaki" data-animate-hover="pulse" class="external facebook">
+    <i class="fa fa-facebook"></i>
+  </a>
+  
+  
+  
+  
+  
+  <a href="mailto:yup.im.aki@gmail.com" data-animate-hover="pulse" class="email">
+    <i class="fa fa-envelope"></i>
+  </a>
+  
+  
+  <a href="https://www.linkedin.com/in/akhil-nair-7b13316b/" data-animate-hover="pulse">
+    <i class="fa fa-linkedin"></i>
+  </a>
+  
+  
+  <a href="http://stackoverflow.com/users/4303355/akhil-nair?tab=profile" data-animate-hover="pulse">
+    <i class="fa fa-stack-overflow"></i>
+  </a>
+  
+  
+  <a href="https://github.com/AkhilNairAmey" data-animate-hover="pulse">
+    <i class="fa fa-github"></i>
+  </a>
+  
+</p>
+
+
+    <div class="copyright">
+      <p class="credit">
+        
+          &copy;2017 Akhil Nair
+        
+        | Template by <a href="https://bootstrapious.com/free-templates" class="external">Bootstrapious.com</a>
+
+&amp; ported to Hugo by <a href="https://github.com/kishaningithub">Kishan B</a>
+
+      </p>
+    </div>
+  </div>
+</div>
+
+              
+<div class="col-xs-12 col-sm-8 col-md-9 content-column white-background">
+  <div class="small-navbar visible-xs">
+  <button type="button" data-toggle="offcanvas" class="btn btn-ghost pull-left"> <i class="fa fa-align-left"> </i>Menu</button>
+  <h1 class="small-navbar-heading"><a href="/">Akhil Nair</a></h1>
+</div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="content-column-content">
+         <h1>Simple R Webserver</h1>
+         
+
+<p>After having deployed a few websites with Nginx and understanding how to use it
+fairly well, I thought it might be useful to ask a question to my colleague
+Vergil which he found pretty funny.</p>
+
+<blockquote>
+<p>&lsquo;So&hellip; what actually is a webserver?&rsquo;</p>
+</blockquote>
+
+<p>I&rsquo;ve found with a few programs with especially clean interfaces (such as git), I
+end up being able to use a program effectively without understanding it, so I
+can mindlessly follow instructures and proceedures I&rsquo;ve done before, but I can&rsquo;t
+create anything.  Nginx was particularly funny to me, because I had no idea what
+a webserver actually did.</p>
+
+<p>After spending about 2 hours of Vergil&rsquo;s time trying to work out what a
+webserver, socket, connection and other networking definitions actually were
+(and him prematurely breaking out wireshark) I thought I&rsquo;d just try and hook
+together something super simple.</p>
+
+<p>Turns out the whole endevour is way too easy in python.  The <code>socket</code> library is
+absurdly elegant (Ruslan Spivak goes to town on this topic <a href="https://ruslanspivak.com/lsbaws-part1/">here</a> in a fantastic series) and I
+imagine <code>rstudio/httpuv</code> offers similar functionality.  I thought I&rsquo;d keep it
+simple and only use <code>base::socketConnection</code> for the whole thing.</p>
+
+<p>Before I start, some definitions I don&rsquo;t want to forget:</p>
+
+<ul>
+<li><strong>Port</strong> - A virtual identifier defining an endpoint (to a service)</li>
+<li><strong>Endpoint</strong> - A location by which a service interacts, such as a
+<code>host</code>:<code>port</code> combination</li>
+<li><strong>Socket</strong> - An endpoint instance in the context of a (TCP) connection,
+defined by a host and port</li>
+<li><strong>Connection</strong> - Identified by a socket pair (two endpoints)</li>
+</ul>
+
+<p>The above have all been taken from this stackoverflow <a href="https://stackoverflow.com/questions/152457/what-is-the-difference-between-a-port-and-a-socket">answer</a>.</p>
+
+<h2 id="simple-server">Simple server</h2>
+
+<p>First we&rsquo;ll look at the main new function which seems to encapsulate any and all
+confusing functionality.</p>
+
+<h3 id="socketconnection"><code>socketConnection</code></h3>
+
+<p>Start by defining a short script which sets up a listener.</p>
+
+<pre><code>while (TRUE) {
+
+  print('Open TCP listener')
+
+  # Annoyingly named as this doesn't seem to set up a _connection_
+  con = socketConnection(
+    host = 'localhost',
+    port = 8888,
+    blocking = TRUE,
+    server = TRUE,  # The socket is defined as the server
+    open = 'r+'
+  )
+}
+
+</code></pre>
+
+<p>This causes me endless confusion as the function name implies that the socket is
+somehow the connection which seems to be bollocks. We can confirm this by using
+<code>netstat</code>.</p>
+
+<pre><code>akhil@Sleek:~/example/rserver$ Rscript socketConnection.R &amp;
+[1] 13629
+[1] &quot;Open TCP listener&quot;
+
+akhil@Sleek:~/example/rserver$ netstat -ant
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State         
+tcp        0      0 0.0.0.0:8888            0.0.0.0:*               LISTEN     
+tcp        0      0 192.168.1.122:41528     198.252.206.25:443      ESTABLISHED
+</code></pre>
+
+<p>We can see that a listening endpoint has been set up, accepting incoming
+connections from anywhere on the host machine.  This is in contrast to the
+connection below it which has been established between a local and remote
+socket.</p>
+
+<h3 id="communication-via-telnet">Communication via telnet</h3>
+
+<p>So let&rsquo;s edit our simple script such that it will read in a single line of
+incoming data and hand a modified response back to the client.</p>
+
+<pre><code>host = 'localhost'
+port = 6011
+
+while (TRUE) {
+
+  writeLines(paste('Listening on port', port))
+  con = socketConnection(
+    host = host,
+    port = port,
+    blocking = TRUE,
+    server = TRUE,  # The socket is defined as the server
+    open = 'r+'
+  )
+
+  # Read the data sent to the connection
+  data = readLines(con, n = 1L)
+
+  print(paste('Read', data))
+
+  response &lt;- toupper(data)
+  writeLines(response, con)
+
+  close(con)
+
+}
+</code></pre>
+
+<p>Connecting to this via a browser doesn&rsquo;t seem to yield much, probably because
+there is no <code>HTTP</code> header in the response, as bluntly pointed out by
+<code>ERR_INVALID_HTTP_RESPONSE</code>.  Our listening socket still manages to print the
+read in data though.</p>
+
+<pre><code>akhil@Sleek:~/example/rserver/git ((telnet))$ Rscript server.R
+Serving HTTP on port 6011
+[1] &quot;Read GET / HTTP/1.1&quot;
+</code></pre>
+
+<p>The browser request pushes through a <code>GET</code> request to the listening socket,
+over the protocol which is <code>HTTP/1.1</code>.  Something like nginx might know how to
+route requests to the URI (&lsquo;/&rsquo; in this case).  Given the response we send back
+does not have a valid <code>HTTP</code> header, the browser simply reports an error.</p>
+
+<pre><code>akhil@Sleek:~/example/rserver $ telnet localhost 6011
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+Hello!
+HELLO!
+Connection closed by foreign host.
+</code></pre>
+
+<p>Telnet makes it easier to see that our operation to modify the data was
+successful as it doesn&rsquo;t care about the protocol. It&rsquo;s just reading and handing
+over bytes in a connection.</p>
+
+<h3 id="communication-via-a-defined-client">Communication via a defined client</h3>
+
+<p>It&rsquo;s pretty annoying we can only send a single message and we don&rsquo;t know why
+we&rsquo;re doing that though. We can define a short client program to sort these
+issues out and clean things up a bit for our end user.</p>
+
+<p>Importantly, I found it made me feel like a real <code>vim</code> programmer at this point
+to use <code>byobu</code>, have my client and server terminals open in a the lower
+quadrants to the terminal, and split screen <code>vim</code> to have both scripts open
+above them. Editing my <code>server.R</code> and defining a new <code>client.R</code>.</p>
+
+<p><strong>server.R</strong></p>
+
+<pre><code>host = 'localhost'
+port = 6011
+
+while (TRUE) {
+
+  writeLines(paste('Serving HTTP on port', port))
+  con = socketConnection(
+    host = host,
+    port = port,
+    blocking = TRUE,
+    server = TRUE,
+    open = 'r+'
+  )
+
+  # Read the data sent to the connection
+  data = readLines(con, 1)
+
+  print(paste('Read', data))
+
+  response &lt;- toupper(data)
+
+  # Optional sleep here
+
+  writeLines(response, con)
+  print(paste('Imma send', response, 'back'))
+
+  close(con)
+
+}
+</code></pre>
+
+<p><strong>client.R</strong></p>
+
+<pre><code>host = 'localhost'
+port = 6011
+
+writeLines('Upper casing program')
+
+while (TRUE) {
+
+  con = socketConnection(
+    host = host,
+    port = port,
+    blocking = TRUE,
+    server = FALSE,  # Because client
+    open = 'r+'
+  )
+
+  # Define an input method
+  f = file(&quot;stdin&quot;)
+
+  open(f)  # Open the file
+  cat(&quot;Enter text to upper case\n&quot;)
+  read_input = readLines(f, n = 1L)  # Read an input line
+
+  # Define a way to exit the client
+  if (tolower(read_input) == &quot;q&quot;) break
+
+  # Write the client data to the server
+  writeLines(read_input, con)
+
+  # The response should be served pretty quickly
+  server_resp = readLines(con, n = 1L)
+
+  print(server_resp)
+
+  close(con)
+
+}
+</code></pre>
+
+<p>From the simple couple of scripts above we get a connection that can pass,
+modify and return data.  This is admittedly <em>far</em> nicer to look at in python.
+Our program so far, starting the client (with the server running ofc)</p>
+
+<pre><code>akhil@Sleek:~/example/rserver/ $ Rscript client.R
+Upper casing program
+Enter text to upper case
+Please upper case me :(
+</code></pre>
+
+<p>In the server we see</p>
+
+<pre><code>Serving HTTP on port 6011
+[1] &quot;Read Please upper case me :(&quot;
+[1] &quot;Imma send PLEASE UPPER CASE ME :( back&quot;
+</code></pre>
+
+<p>And the client recieves</p>
+
+<pre><code>│[1] &quot;PLEASE UPPER CASE ME :(&quot;
+</code></pre>
+
+<p>where an optional sleep can be added to make expicit the order of events.</p>
+
+<h2 id="simple-http-server">Simple HTTP server</h2>
+
+<p>To be continued&hellip;</p>
+
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+          </div>
+      </div>
+  </div>
+  <script src="https://akhilnairamey.github.io/js/jquery.min.js"></script>
+<script src="https://akhilnairamey.github.io/js/bootstrap.min.js"></script>
+<script src="https://akhilnairamey.github.io/js/jquery.cookie.js"> </script>
+<script src="https://akhilnairamey.github.io/js/ekko-lightbox.js"></script>
+<script src="https://akhilnairamey.github.io/js/jquery.scrollTo.min.js"></script>
+<script src="https://akhilnairamey.github.io/js/masonry.pkgd.min.js"></script>
+<script src="https://akhilnairamey.github.io/js/imagesloaded.pkgd.min.js"></script>
+<script src="https://akhilnairamey.github.io/js/owl.carousel.min.js"></script>
+<script src="https://akhilnairamey.github.io/js/front.js"></script>
+
+</body>
+</html>
