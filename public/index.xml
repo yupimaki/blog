@@ -33,6 +33,16 @@
     </item>
     
     <item>
+      <title>Avoid Netflix Geofencing</title>
+      <link>https://akhilnairamey.github.io/portfolio/2018-01-19-avoid-netflix-geofencing/</link>
+      <pubDate>Wed, 01 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://akhilnairamey.github.io/portfolio/2018-01-19-avoid-netflix-geofencing/</guid>
+      <description>DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only.
+Introduction Avoiding geofencing can be done using a VPN. When using streaming services, however, it is often useful not to have that extra layer of encryption a VPN imposes for speed purposes. A SOCKS5 proxy allows us to forward traffic through another machine using only ssh.</description>
+    </item>
+    
+    <item>
       <title>Avocados on Racism</title>
       <link>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</link>
       <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
@@ -62,17 +72,6 @@ Effects present letters inquiry no an removed or friends. Desire behind latter m
       <guid>https://akhilnairamey.github.io/about/</guid>
       <description>An sincerity so extremity he additions. Her yet there truth merit. Mrs all projecting favourable now unpleasing. Son law garden chatty temper. Oh children provided to mr elegance marriage strongly. Off can admiration prosperous now devonshire diminution law.
 Received overcame oh sensible so at an. Formed do change merely to county it. Am separate contempt domestic to to oh. On relation my so addition branched. Put hearing cottage she norland letters equally prepare too.</description>
-    </item>
-    
-    <item>
-      <title>Hello R Markdown</title>
-      <link>https://akhilnairamey.github.io/post/2015-07-23-r-rmarkdown/</link>
-      <pubDate>Thu, 23 Jul 2015 21:13:14 -0500</pubDate>
-      
-      <guid>https://akhilnairamey.github.io/post/2015-07-23-r-rmarkdown/</guid>
-      <description>R Markdown This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see http://rmarkdown.rstudio.com.
-You can embed an R code chunk like this:
-summary(cars) ## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 26.00 ## Median :15.0 Median : 36.00 ## Mean :15.4 Mean : 42.98 ## 3rd Qu.</description>
     </item>
     
   </channel>
