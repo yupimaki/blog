@@ -34,10 +34,10 @@
     
     <item>
       <title>Avoid Netflix Geofencing</title>
-      <link>https://akhilnairamey.github.io/portfolio/2018-01-19-avoid-netflix-geofencing/</link>
+      <link>https://akhilnairamey.github.io/portfolio/2017-02-01-avoid-netflix-geofencing/</link>
       <pubDate>Wed, 01 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/2018-01-19-avoid-netflix-geofencing/</guid>
+      <guid>https://akhilnairamey.github.io/portfolio/2017-02-01-avoid-netflix-geofencing/</guid>
       <description>DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only.
 Introduction Avoiding geofencing can be done using a VPN. When using streaming services, however, it is often useful not to have that extra layer of encryption a VPN imposes for speed purposes. A SOCKS5 proxy allows us to forward traffic through another machine using only ssh.</description>
     </item>
