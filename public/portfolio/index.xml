@@ -19,7 +19,7 @@
       
       <guid>https://akhilnairamey.github.io/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</guid>
       <description>DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only.
-TL;DR  Clone this repo to get the necessary files Install terraform Copy and fill in secrets/terraform.tfvars.template as secrets/terraform.tfvars cd into netflix-and-socks repo Run terraform init Run ./terraform.sh apply and type yes to confirm Run ./launch.sh to avoid geofencing.  If you&amp;rsquo;re familiar with AWS (Amazon Web Services), this is all you need to do, hence it is super easy and convienient.</description>
+TL;DR  Clone this repo to get the necessary files Install terraform cd into netflix-and-socks repo Copy and fill in secrets/terraform.tfvars.template as secrets/terraform.tfvars Run terraform init Run ./terraform.sh apply and type yes to confirm Run ./launch.sh to avoid geofencing.  If you&amp;rsquo;re familiar with AWS (Amazon Web Services), this is all you need to do, hence it is super easy and convienient.</description>
     </item>
     
     <item>

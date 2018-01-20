@@ -16,8 +16,8 @@ _DISCLAIMER: This has been written for educational purposes of learning about ro
 
  - Clone [this repo](https://github.com/AkhilNairAmey/netflix-and-socks) to get the necessary files
  - Install terraform
- - Copy and fill in `secrets/terraform.tfvars.template` as `secrets/terraform.tfvars`
  - `cd` into `netflix-and-socks` repo
+ - Copy and fill in `secrets/terraform.tfvars.template` as `secrets/terraform.tfvars`
  - Run `terraform init`
  - Run `./terraform.sh apply` and type `yes` to confirm
  - Run `./launch.sh` to avoid geofencing.
