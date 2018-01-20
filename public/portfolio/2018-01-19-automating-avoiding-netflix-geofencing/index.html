@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="description" content="Things I have motivation to write about">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="all,follow">
+<meta name="googlebot" content="index,follow,snippet,archive">
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,300,700,400italic">
+<link rel="stylesheet" href="/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/owl.carousel.css">
+<link rel="stylesheet" href="/css/owl.theme.css">
+
+
+  <link href="/css/style.default.css" rel="stylesheet" id="theme-stylesheet">
+
+
+<link href="/css/custom.css" rel="stylesheet">
+<link rel="shortcut icon" href="/img/favicon.png">
+
+
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-97307378-1', 'auto');
+ga('send', 'pageview');
+</script>
+<script async src='//www.google-analytics.com/analytics.js'></script>
+
+</head>
+<body>
+  <div id="all">
+      <div class="container-fluid">
+          <div class="row row-offcanvas row-offcanvas-left">
+              <div id="sidebar" class="col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas">
+  <div class="sidebar-content">
+    <h1 class="sidebar-heading"><a href="/">Akhil Nair</a></h1>
+    
+      <p class="sidebar-p">I am a data science consultant working in the rail industry with a background in Maths and Statistics</p>
+    
+      <p class="sidebar-p">Originally from London, based in London.</p>
+    
+    <ul class="sidebar-menu">
+      
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/about/">About</a></li>
+      
+        <li><a href="/contact/">Get in touch</a></li>
+      
+    </ul>
+    <p class="social">
+  
+  <a href="https://www.facebook.com/yupimaki" data-animate-hover="pulse" class="external facebook">
+    <i class="fa fa-facebook"></i>
+  </a>
+  
+  
+  
+  
+  
+  <a href="mailto:yup.im.aki@gmail.com" data-animate-hover="pulse" class="email">
+    <i class="fa fa-envelope"></i>
+  </a>
+  
+  
+  <a href="https://www.linkedin.com/in/akhil-nair-7b13316b/" data-animate-hover="pulse">
+    <i class="fa fa-linkedin"></i>
+  </a>
+  
+  
+  <a href="http://stackoverflow.com/users/4303355/akhil-nair?tab=profile" data-animate-hover="pulse">
+    <i class="fa fa-stack-overflow"></i>
+  </a>
+  
+  
+  <a href="https://github.com/AkhilNairAmey" data-animate-hover="pulse">
+    <i class="fa fa-github"></i>
+  </a>
+  
+</p>
+
+
+    <div class="copyright">
+      <p class="credit">
+        
+          &copy;2017 Akhil Nair
+        
+        | Template by <a href="https://bootstrapious.com/free-templates" class="external">Bootstrapious.com</a>
+
+&amp; ported to Hugo by <a href="https://github.com/kishaningithub">Kishan B</a>
+
+      </p>
+    </div>
+  </div>
+</div>
+
+              
+<div class="col-xs-12 col-sm-8 col-md-9 content-column white-background">
+  <div class="small-navbar visible-xs">
+  <button type="button" data-toggle="offcanvas" class="btn btn-ghost pull-left"> <i class="fa fa-align-left"> </i>Menu</button>
+  <h1 class="small-navbar-heading"><a href="/">Akhil Nair</a></h1>
+</div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="content-column-content">
+         <h1></h1>
+         
+
+<h1 id="automating-netflix-geoblocking">Automating Netflix geoblocking</h1>
+
+<p><em>DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only.</em></p>
+
+<h2 id="tl-dr">TL;DR</h2>
+
+<ul>
+<li>Clone <a href="https://github.com/AkhilNairAmey/netflix-and-socks">this repo</a> to get the necessary files</li>
+<li>Install terraform</li>
+<li>Copy and fill in <code>secrets/terraform.tfvars.template</code> as <code>secrets/terraform.tfvars</code>.</li>
+<li>Run <code>terraform init</code></li>
+<li>Run <code>./terraform.sh apply</code> and type <code>yes</code> to confirm</li>
+<li>Run <code>./launch.sh</code> to avoid geofencing.</li>
+</ul>
+
+<p>If you&rsquo;re familiar with AWS (Amazon Web Services), this is all you need to do, hence it is super easy and convienient.  If you&rsquo;re not so familiar, read on. I&rsquo;ll take you through step-by-step.</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>At the start of last year, I learnt how to launch a browser from another country, using AWS as a proxy service. At the start of this year, I also learnt of a great program called <code>terraform</code> (learn about it <a href="https://www.terraform.io/intro/index.html">here</a>, the docs are great!). <code>Terraform</code> makes it easy for anyone to create their own proxy server.</p>
+
+<p>This should work easily for Mac and linux users. Due to <code>terraform</code>, the process will be very similar for Windows users, but I have only provided helper <code>.sh</code> scripts. It won&rsquo;t be hard to convert them to <code>*.bat</code> files.</p>
+
+<h2 id="plan">Plan</h2>
+
+<p>The steps we will take are</p>
+
+<ul>
+<li>Clone my <code>terraform</code> files</li>
+<li>Sign up to AWS</li>
+<li>Make a User Role with an Access Key</li>
+<li>Let <code>terraform</code> know our credentials</li>
+<li>Download and install <code>terraform</code></li>
+<li>Automatically provision the proxy server</li>
+<li>Launch <code>google-chrome</code> via the proxy server</li>
+</ul>
+
+<h3 id="clone-my-terraform-files">Clone my <code>terraform</code> files</h3>
+
+<p>Download the code (including the necessary config) <a href="https://github.com/AkhilNairAmey/netflix-and-socks">here</a>. If you&rsquo;ve used <code>git</code> before, you know what to do. Else, click the <code>Download ZIP</code> button and get the code like a normal folder. This is known as a code repository or <em>repository</em></p>
+
+<p><img src="img/clone.png" alt="Clone Repo" /></p>
+
+<p>For now, we won&rsquo;t need any of the files. Just remember there is a file at <code>folder/secrets/terraform.tfvars.template</code>, which we will soon be filling in with some credentials you&rsquo;ll make.</p>
+
+<pre><code>akhil@pc:~/personal/netflix-and-socks cat secrets/terraform.tfvars.template
+access_key = &quot;XXXXXXXXXXXXXXXXXXXX&quot;
+secret_key = &quot;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot;
+public_key = &quot;ssh-rsa AAAAB3N...THISISAREALLYLONGSTRING...DPMDMPDOPWJEF&quot;
+region = &quot;us-east-1&quot;
+</code></pre>
+
+<h3 id="sign-up-to-aws">Sign up to AWS</h3>
+
+<p>Sign up to AWS <a href="https://portal.aws.amazon.com/billing/signup">here</a>. If your first year of usage has already expired and you want to continue using free tier machines, create a new email address to sign up with first.</p>
+
+<p>You will have to provide your payment card details. You will not be charged for the first year, using AWS only for the infrastructure in the provided <code>*.tf</code> file. Nonetheless <strong>you do this at your own risk and I am not responsible</strong> if you do get charged for something. Furthermore, if you do get charged, please let me know, as it might mean I&rsquo;m getting charged, and that&rsquo;s not ideal.</p>
+
+<h3 id="make-a-user-role-with-an-access-key">Make a User Role with an Access Key</h3>
+
+<ul>
+<li>The <em>User</em> is an AWS abstraction. You can create a User to, in this case, allow programmatic access to AWS resources you specify.</li>
+<li>The <em>Access Key</em> and <em>Secret Key</em> are analogous to the username and password for the <em>User</em>.</li>
+</ul>
+
+<p>Navigate to the <em>User Creation Page</em> <a href="https://console.aws.amazon.com/iam/home?region=us-east-1#/users">here</a>. Note, that is not the page name. In case the page moves, it is found under <code>IAM &gt; User</code>.</p>
+
+<p>Create a <code>Terraform</code> User with programmatic access to enable access tokens.</p>
+
+<ul>
+<li>Click the blue <code>Add User</code> button.<br /></li>
+<li>Name the user <code>Terraform</code></li>
+<li>Tick <code>Programmatic access</code></li>
+</ul>
+
+<p>You should have a result like the image below before moving to the next screen.</p>
+
+<p><img src="img/user.png" alt="User Creation" /></p>
+
+<ul>
+<li>Click <code>Next</code></li>
+</ul>
+
+<p>Next we give our <code>Terraform</code> user permission to manipulate servers on our AWS account, i.e., programs that can authorise as <code>Terraform</code> may create, destory, etc. provisioned virtual machines.</p>
+
+<ul>
+<li>Click <code>Attach existing policies directly</code></li>
+<li>Type <code>EC2Full</code> in the search bar</li>
+<li>Tick the policy that returns from the search - <code>AmazonEC2FullAccess</code></li>
+</ul>
+
+<p><img src="img/permissions.png" alt="Add Permissions" /></p>
+
+<ul>
+<li>Click <code>Next</code></li>
+</ul>
+
+<p>Review your selection to make sure programmatic access with full EC2 permission has been selected. Proceed to the next screen, where we will be presented with our newly created access tokens. You will be warned many times about these things</p>
+
+<ul>
+<li>You can <strong>only</strong> see your <em>secret access key</em> here</li>
+<li><strong>Do not let anyone see your secret access key</strong> - They can manipulate potentially expensive AWS resources with it</li>
+</ul>
+
+<p>Now the warnings are out of the way;</p>
+
+<ul>
+<li>Copy your <em>Access key ID</em> (AK) somewhere safe</li>
+<li>Click <code>Show</code> under <em>Secret access key</em></li>
+<li>Copy your <em>Secret access key</em> (SK) somewhere safe</li>
+</ul>
+
+<p>We&rsquo;re done with the hard part!</p>
+
+<h3 id="let-terraform-know-our-credentials">Let <code>terraform</code> know our credentials</h3>
+
+<p>Do you remember that <code>secrets/terraform.tfvars.template</code> file from before? Make a copy of the file called <code>terraform.tfvars</code>, also in the <code>secrets</code> folder. Replace the <code>XXXX</code>s with your AK and SK. You should know which goes where, just by the length of the keys.</p>
+
+<p>We also need to add a <em>Public Key</em> to this file. I&rsquo;m not going to go through in detail what this is, or how to create this keypair, but it a keypair is a way to prove your identify and authenticate with a server or program without using a password. Follow <a href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/">this short guide</a> from GitHub to effortlessly set this up. Add the public key you made to <code>terraform.tfvars</code>.</p>
+
+<p>This is also where you would change the server location. Say, if you needed to browse the web from mainland europe, you would set the <code>region</code> to <code>eu-central-1</code></p>
+
+<p>Note, the name and location of the file <em>is</em> important.</p>
+
+<h3 id="download-and-install-terraform">Download and install <code>terraform</code></h3>
+
+<p>We&rsquo;ve premptively let <code>terraform</code> know what our AWS credentials are, before even installing <code>terraform</code>. How? Because when we run <code>terraform</code> with a specific configuration, defined by a <code>*.tf</code> file, terraform will know to look for credentials in a file called exactly <code>terraform.tfvars</code>.</p>
+
+<ul>
+<li>Find the terraform download links <a href="https://www.terraform.io/downloads.html">here</a>.</li>
+<li>Choose your platform and click it to download the archive</li>
+<li>Open the downloaded archive which should have one binary file in it</li>
+<li>Extract/drag this file to some reasonable program location</li>
+</ul>
+
+<p>I use <code>Ubuntu</code> and so extracted it to <code>/opt/terraform/</code> because of <a href="https://askubuntu.com/questions/1148/when-installing-user-applications-where-do-best-practices-suggest-they-be-loc">reasons</a>. This is slightly confusing. To confirm, the binary lives at <code>/opt/terraform/terraform</code>.</p>
+
+<ul>
+<li>Add <code>terraform</code> to the <code>PATH</code> variable so it can be launched via the command line</li>
+</ul>
+
+<p>Mac and Linux users can do this by running the following command in a terminal</p>
+
+<pre><code>sudo ln -s /opt/terraform/terraform /usr/bin/terraform
+</code></pre>
+
+<p>Check your <code>terraform</code> install by typing <code>terraform --version</code> into the terminal from anywhere.</p>
+
+<pre><code>akhil@pc:~$ terraform --version
+Terraform v0.11.2
+</code></pre>
+
+<p>Success!</p>
+
+<h3 id="automatically-provision-the-proxy-server">Automatically provision the proxy server</h3>
+
+<ul>
+<li>Navigate back to the initial repository we downloaded</li>
+<li>Download the AWS drivers using <code>terraform init</code></li>
+</ul>
+
+<p>I&rsquo;ve added a helper script called <code>./terraform.sh</code> that will pass our secret credentials file to <code>terraform</code>. I hope by now you&rsquo;ve filled it out it an <code>access_key</code>, a <code>secret_key</code>, and a <code>public_key</code>.</p>
+
+<ul>
+<li>Run <code>./terraform.sh plan</code> to see what <code>terraform</code> plans to do on AWS
+
+<ul>
+<li>If you haven&rsquo;t correctly made <code>secrets/terraform.tfvars.template</code>, you will be prompted for the keys here.</li>
+</ul></li>
+</ul>
+
+<p>The <code>terraform</code> plan will be output to the terminal. Importantly, you&rsquo;ll see <code>terraform</code> wants to add 4 AWS resources.</p>
+
+<pre><code>Plan: 4 to add, 0 to change, 0 to destroy.
+</code></pre>
+
+<ul>
+<li>Run <code>./terraform.sh apply</code> to automatically make the infrastructure</li>
+<li>Type <code>yes</code> to confirm you want to proceed</li>
+<li>Wait under a minute for this to all launch</li>
+<li>Finally run <code>./launch.sh</code> to surf the web from the server&rsquo;s geographic location</li>
+<li>I like to check this works by seeing if Netflix offers me <em>Grey&rsquo;s Anatomy</em>. I would never actually play it though.</li>
+</ul>
+
+<p>The terminal should be held by the &ldquo;tunnel&rdquo;, which enables web traffic forwarding from the US server. And you&rsquo;re done! Hopefully if you read back the TL;DR at the start, you can appreciate how simple a process this is, with the credentials already set up.</p>
+
+<p>Thanks for reading,</p>
+
+<p>Akhil</p>
+
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+          </div>
+      </div>
+  </div>
+  <script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.cookie.js"> </script>
+<script src="/js/ekko-lightbox.js"></script>
+<script src="/js/jquery.scrollTo.min.js"></script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/imagesloaded.pkgd.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/front.js"></script>
+
+</body>
+</html>
