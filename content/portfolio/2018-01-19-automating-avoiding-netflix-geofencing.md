@@ -16,7 +16,8 @@ _DISCLAIMER: This has been written for educational purposes of learning about ro
 
  - Clone [this repo](https://github.com/AkhilNairAmey/netflix-and-socks) to get the necessary files
  - Install terraform
- - Copy and fill in `secrets/terraform.tfvars.template` as `secrets/terraform.tfvars`.
+ - Copy and fill in `secrets/terraform.tfvars.template` as `secrets/terraform.tfvars`
+ - `cd` into `netflix-and-socks` repo
  - Run `terraform init`
  - Run `./terraform.sh apply` and type `yes` to confirm
  - Run `./launch.sh` to avoid geofencing.
@@ -145,6 +146,8 @@ Success!
 
 ### Automatically provision the proxy server
 
+You'll have to use the terminal now. Don't worry though, there are only very simple commands to type in.
+
  - Navigate back to the initial repository we downloaded
  - Download the AWS drivers using `terraform init`
 
@@ -170,3 +173,4 @@ Plan: 4 to add, 0 to change, 0 to destroy.
  Thanks for reading,
  
  Akhil
+ 
