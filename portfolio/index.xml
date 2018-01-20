@@ -2,32 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Portfolios on Akhil Nair</title>
-    <link>https://akhilnairamey.github.io/portfolio/</link>
+    <link>/portfolio/</link>
     <description>Recent content in Portfolios on Akhil Nair</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
     <copyright>&amp;copy;2017 Akhil Nair</copyright>
     <lastBuildDate>Fri, 19 Jan 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://akhilnairamey.github.io/portfolio/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/portfolio/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Automating Avoiding Netflix Geofencing</title>
-      <link>https://akhilnairamey.github.io/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</link>
+      <link>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</guid>
+      <guid>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</guid>
       <description>DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only.
-TL;DR  Clone this repo to get the necessary files Install terraform Copy and fill in secrets/terraform.tfvars.template as secrets/terraform.tfvars. Run terraform init Run ./terraform.sh apply and type yes to confirm Run ./launch.sh to avoid geofencing.  If you&amp;rsquo;re familiar with AWS (Amazon Web Services), this is all you need to do, hence it is super easy and convienient.</description>
+TL;DR  Clone this repo to get the necessary files Install terraform Copy and fill in secrets/terraform.tfvars.template as secrets/terraform.tfvars cd into netflix-and-socks repo Run terraform init Run ./terraform.sh apply and type yes to confirm Run ./launch.sh to avoid geofencing.  If you&amp;rsquo;re familiar with AWS (Amazon Web Services), this is all you need to do, hence it is super easy and convienient.</description>
     </item>
     
     <item>
       <title>Simple R Webserver</title>
-      <link>https://akhilnairamey.github.io/portfolio/simple-r-webserver/</link>
+      <link>/portfolio/simple-r-webserver/</link>
       <pubDate>Sat, 29 Jul 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/simple-r-webserver/</guid>
+      <guid>/portfolio/simple-r-webserver/</guid>
       <description>After having deployed a few websites with Nginx and understanding how to use it fairly well, I thought it might be useful to ask a question to my colleague Vergil which he found pretty funny.
  &amp;lsquo;So&amp;hellip; what actually is a webserver?&amp;rsquo;
  I&amp;rsquo;ve found with a few programs with especially clean interfaces (such as git), I end up being able to use a program effectively without understanding it, so I can mindlessly follow instructures and proceedures I&amp;rsquo;ve done before, but I can&amp;rsquo;t create anything.</description>
@@ -35,29 +35,29 @@ TL;DR  Clone this repo to get the necessary files Install terraform Copy and fil
     
     <item>
       <title>Facebook Message Analysis</title>
-      <link>https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis/</link>
+      <link>/portfolio/2017-05-27-facebook-message-analysis/</link>
       <pubDate>Sat, 27 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis/</guid>
+      <guid>/portfolio/2017-05-27-facebook-message-analysis/</guid>
       <description>Let’s try and find out for ourselves just how much Facebook knows about me, given I waived my privacy to them back in 2009. If you download your own through settings on your profile and have some familiarity with R, you should be able to run the same graphs off from your own data. The markdown file is available on my github page and there’s a code dump as the appendix.</description>
     </item>
     
     <item>
       <title>Avoid Netflix Geofencing</title>
-      <link>https://akhilnairamey.github.io/portfolio/2017-02-01-avoid-netflix-geofencing/</link>
+      <link>/portfolio/2017-02-01-avoid-netflix-geofencing/</link>
       <pubDate>Wed, 01 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/2017-02-01-avoid-netflix-geofencing/</guid>
+      <guid>/portfolio/2017-02-01-avoid-netflix-geofencing/</guid>
       <description>DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only.
 Introduction Avoiding geofencing can be done using a VPN. When using streaming services, however, it is often useful not to have that extra layer of encryption a VPN imposes for speed purposes. A SOCKS5 proxy allows us to forward traffic through another machine using only ssh.</description>
     </item>
     
     <item>
       <title>Avocados on Racism</title>
-      <link>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</link>
+      <link>/portfolio/2017-04-09-avocados-on-racism/</link>
       <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</guid>
+      <guid>/portfolio/2017-04-09-avocados-on-racism/</guid>
       <description>So white people pay attention to it.
 and to pre-empt the next usual question
 The size of this region is facetious  Appendix Code for density plot
