@@ -14,10 +14,10 @@
     
     <item>
       <title>Automating Avoiding Netflix Geofencing</title>
-      <link>/portfolio/2018-01-19-automate-netflix-geoblocking/</link>
+      <link>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/portfolio/2018-01-19-automate-netflix-geoblocking/</guid>
+      <guid>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</guid>
       <description>DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only.
 TL;DR  Clone this repo to get the necessary files Install terraform Copy and fill in secrets/terraform.tfvars.template as secrets/terraform.tfvars. Run terraform init Run ./terraform.sh apply and type yes to confirm Run ./launch.sh to avoid geofencing.  If you&amp;rsquo;re familiar with AWS (Amazon Web Services), this is all you need to do, hence it is super easy and convienient.</description>
     </item>
@@ -62,28 +62,6 @@ Introduction Avoiding geofencing can be done using a VPN. When using streaming s
 and to pre-empt the next usual question
 The size of this region is facetious  Appendix Code for density plot
 libs = c(&amp;quot;tikzDevice&amp;quot;, &amp;quot;ggplot2&amp;quot;, &amp;quot;purrr&amp;quot;, &amp;quot;tidyr&amp;quot;, &amp;quot;dplyr&amp;quot;) sapply(libs, quiet_library) n = 50 label_height = 0.3 colours = c(&amp;quot;steelblue&amp;quot;, &amp;quot;black&amp;quot;, &amp;quot;red&amp;quot;, &amp;quot;green&amp;quot;) tbl = tibble::tribble( ~`$x$` , ~val , &amp;quot;White people&amp;quot; , rnorm(n, 0.25, 1.3) , &amp;quot;People of colour&amp;quot;, rgamma(n, shape = 7.5, rate = 2.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</guid>
-      <description>Automating Netflix geoblocking DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only.
-TL;DR  Clone this repo to get the necessary files Install terraform Copy and fill in secrets/terraform.tfvars.template as secrets/terraform.tfvars. Run terraform init Run ./terraform.sh apply and type yes to confirm Run ./launch.sh to avoid geofencing.  If you&amp;rsquo;re familiar with AWS (Amazon Web Services), this is all you need to do, hence it is super easy and convienient.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing_files/creds/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing_files/creds/</guid>
-      <description> Terraform secret variables Place secret variables in a file called terraform.tfvars which will be sourced on running terraform &amp;lt;command&amp;gt;.
-As terraform/variables.tf declare variables without defaults, if they are not provided in the terraform.tfvars file, they will be asked for at run time.
-Hence, so far we need to add
-access_key = &amp;quot;AKIAXXXXXXXXXXXXXXXX&amp;quot; secret_key = &amp;quot;XXXXXXXxxXxxxXxXxXXxxXxxxXxxxXxxXxxxxXXx&amp;quot; public_key = &amp;quot;ssh-rsa AAAAB3N...THISISAREALLYLONGSTRING...DPMDMPDOPWJEF&amp;quot; region = &amp;quot;us-east-1&amp;quot;  </description>
     </item>
     
   </channel>

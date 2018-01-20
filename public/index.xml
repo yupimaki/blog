@@ -14,10 +14,10 @@
     
     <item>
       <title>Automating Avoiding Netflix Geofencing</title>
-      <link>/portfolio/2018-01-19-automate-netflix-geoblocking/</link>
+      <link>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</link>
       <pubDate>Fri, 19 Jan 2018 00:00:00 +0000</pubDate>
       
-      <guid>/portfolio/2018-01-19-automate-netflix-geoblocking/</guid>
+      <guid>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</guid>
       <description>DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only.
 TL;DR  Clone this repo to get the necessary files Install terraform Copy and fill in secrets/terraform.tfvars.template as secrets/terraform.tfvars. Run terraform init Run ./terraform.sh apply and type yes to confirm Run ./launch.sh to avoid geofencing.  If you&amp;rsquo;re familiar with AWS (Amazon Web Services), this is all you need to do, hence it is super easy and convienient.</description>
     </item>
@@ -82,28 +82,6 @@ Effects present letters inquiry no an removed or friends. Desire behind latter m
       <guid>/about/</guid>
       <description>An sincerity so extremity he additions. Her yet there truth merit. Mrs all projecting favourable now unpleasing. Son law garden chatty temper. Oh children provided to mr elegance marriage strongly. Off can admiration prosperous now devonshire diminution law.
 Received overcame oh sensible so at an. Formed do change merely to county it. Am separate contempt domestic to to oh. On relation my so addition branched. Put hearing cottage she norland letters equally prepare too.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</guid>
-      <description>Automating Netflix geoblocking DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only.
-TL;DR  Clone this repo to get the necessary files Install terraform Copy and fill in secrets/terraform.tfvars.template as secrets/terraform.tfvars. Run terraform init Run ./terraform.sh apply and type yes to confirm Run ./launch.sh to avoid geofencing.  If you&amp;rsquo;re familiar with AWS (Amazon Web Services), this is all you need to do, hence it is super easy and convienient.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing_files/creds/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing_files/creds/</guid>
-      <description> Terraform secret variables Place secret variables in a file called terraform.tfvars which will be sourced on running terraform &amp;lt;command&amp;gt;.
-As terraform/variables.tf declare variables without defaults, if they are not provided in the terraform.tfvars file, they will be asked for at run time.
-Hence, so far we need to add
-access_key = &amp;quot;AKIAXXXXXXXXXXXXXXXX&amp;quot; secret_key = &amp;quot;XXXXXXXxxXxxxXxXxXXxxXxxxXxxxXxxXxxxxXXx&amp;quot; public_key = &amp;quot;ssh-rsa AAAAB3N...THISISAREALLYLONGSTRING...DPMDMPDOPWJEF&amp;quot; region = &amp;quot;us-east-1&amp;quot;  </description>
     </item>
     
   </channel>
