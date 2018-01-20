@@ -3,66 +3,79 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://akhilnairamey.github.io/portfolio/simple-r-webserver/</loc>
+    <loc>/portfolio/2018-01-19-automate-netflix-geoblocking/</loc>
+    <lastmod>2018-01-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/portfolio/simple-r-webserver/</loc>
     <lastmod>2017-07-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/portfolio/2017-05-27-facebook-message-analysis/</loc>
+    <loc>/portfolio/2017-05-27-facebook-message-analysis/</loc>
     <lastmod>2017-05-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/portfolio/2017-02-01-avoid-netflix-geofencing/</loc>
+    <loc>/portfolio/2017-02-01-avoid-netflix-geofencing/</loc>
     <lastmod>2017-02-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/portfolio/2017-04-09-avocados-on-racism/</loc>
+    <loc>/portfolio/2017-04-09-avocados-on-racism/</loc>
     <lastmod>2017-01-07T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/contact/</loc>
+    <loc>/contact/</loc>
     <lastmod>2016-11-06T13:00:25+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/about/</loc>
+    <loc>/about/</loc>
     <lastmod>2016-11-05T21:05:33+05:30</lastmod>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/about/</loc>
+    <loc>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing/</loc>
+  </url>
+  
+  <url>
+    <loc>/portfolio/2018-01-19-automating-avoiding-netflix-geofencing_files/creds/</loc>
+  </url>
+  
+  <url>
+    <loc>/about/</loc>
     <lastmod>2016-11-05T21:05:33+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/</loc>
-    <lastmod>2017-07-29T00:00:00+00:00</lastmod>
+    <loc>/</loc>
+    <lastmod>2018-01-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/categories/</loc>
+    <loc>/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/contact/</loc>
+    <loc>/contact/</loc>
     <lastmod>2016-11-06T13:00:25+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/portfolio/</loc>
-    <lastmod>2017-07-29T00:00:00+00:00</lastmod>
+    <loc>/portfolio/</loc>
+    <lastmod>2018-01-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://akhilnairamey.github.io/tags/</loc>
+    <loc>/tags/</loc>
     <priority>0</priority>
   </url>
   
