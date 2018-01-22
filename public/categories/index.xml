@@ -2,13 +2,13 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Akhil Nair</title>
-    <link>https://akhilnairamey.github.io/categories/</link>
+    <link>https://stoic-goldstine-252a80.netlify.com/categories/</link>
     <description>Recent content in Categories on Akhil Nair</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
     <copyright>&amp;copy;2017 Akhil Nair</copyright>
     
-	<atom:link href="https://akhilnairamey.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://stoic-goldstine-252a80.netlify.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
