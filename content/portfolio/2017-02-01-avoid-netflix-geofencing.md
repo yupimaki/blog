@@ -5,24 +5,20 @@ date: '2017-02-01'
 slug: ''
 categories: []
 tags: []
-subtitle: "No longer works for Netflix :("
+subtitle: "Update 2018-01-19, with added Terraform"
 image: "img/portfolio/avoid-netflix-geofencing/netflix.jpg"
-description: "Not actually about Netflix anymore... How to avoid geofencing!"
+description: "Miraculously works again!"
 ---
 
-# Watch Netflix from another IP using `ssh`
-
-_DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information._
+_DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only._
 
 ## Introduction
 
-Avoiding geofencing can be done using a VPN. When using streaming services, however, it is often useful not to have that extra layer of encryption a VPN imposes for speed purposes.  A SOCKS5 proxy allows us to forward traffic through another machine, using only `ssh`.
+Avoiding geofencing can be done using a VPN. When using streaming services, however, it is often useful not to have that extra layer of encryption a VPN imposes for speed purposes.  A _SOCKS5 proxy_ allows us to forward traffic through another machine using only `ssh`.
 
 This article will outline the steps to set up a `SOCKS5` proxy over `ssh` on an Amazon Web Services instance in the US. The instance will be used to forward internet traffic from a machine with a foreign IP address to the host machine. 
 
-When I wrote this, Netflix had not yet blanket blacklisted AWS ip address, however this article is still useful for education on some networking.
-
-When we're done here, running the command `netflix-XXX` in a terminal will launch a browser, where "what's my ip" will return a US address.
+When we're done here, running the command `socks-XXX` in a terminal will launch a browser, where "what's my ip" will return a US address.
 
 ## Cost
 
@@ -141,22 +137,24 @@ port-kill () {
 # Must not have a google-chrome session open.
 # Seems to be a bug in chrome that you can't force start with a new session
 
-alias netflix-XXX="ssh -D 1089 -f -C -q -N XXX-Jumpbox && google-chrome --proxy-server='socks5://localhost:1089'"
+alias socks-XXX="ssh -D 1089 -f -C -q -N XXX-Jumpbox && google-chrome --proxy-server='socks5://localhost:1089'"
 ```
 
-Breaking down the final aliases, `netflix-XXX` is composed of two statements.
+Breaking down the final aliases, `socks-XXX` is composed of two statements.
 
 ```
 ssh -D 1089 -f -C -q -N XXX-Jumpbox
 ```
 
-We already know what `ssh US-Jumpbox` does. Explaining the other flags;
+We already know what `ssh US-Jumpbox` does. Explaining the other flags
+
  - `-D 1089` sets up [D]ynamic port forwarding on the local port `1089` through
  `ssh`
  - `-f` [f]orks the process and runs it in the background
  - `-C` [C]ompresses the data before sending it through the `ssh` pipe
  - `-q` sends all `STDOUT` and `STDERR` messages to `/dev/null`, i.e. it is
  [q]uiet
+ - `-N` [N]egates remote commands, which is good for just port forwarding (according to the `ssh` manual)
 
 The final command is
 
@@ -166,7 +164,7 @@ google-chrome --proxy-server='socks5://localhost:1089'"
 
 This command simply starts google chrome, however specifies that it connects to the web through a proxy server.  We specify the `SOCKS5` endpoint as `localhost` at port `1089`, which we know is dynamically routing our web traffic through some other country.
 
-Now all you have to do to is to run the command `XXX-netflix` in the terminal to launch a web browser, geofenced to another country. When done, tear down the tunnel using `port-kill ssh`, or simply leave it running.
+Now all you have to do to is to run the command `socks-XXX` in the terminal to launch a web browser, geofenced to another country. When done, tear down the tunnel using `port-kill ssh`, or simply leave it running.
 
 Thanks for reading,
 
