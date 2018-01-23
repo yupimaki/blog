@@ -1,4 +1,4 @@
-baseurl = "https://stoic-goldstine-252a80.netlify.com/"
+baseurl = "https://akhilnair.co.uk"
 title = "Akhil Nair"
 theme = "hugo-creative-portfolio-theme"
 languageCode = "en-uk"
@@ -12,7 +12,7 @@ googleAnalytics = "UA-97307378-1"
   # Use custom.css for your custom styling
   style = "default"
   description = "Things I have motivation to write about"
-  copyright = "&copy;2017 Akhil Nair"
+  copyright = "&copy;2018 Akhil Nair"
   sidebarAbout = [
     "I am a data science consultant working in the rail industry with a background in Maths and Statistics",
     "Originally from London, based in London."
