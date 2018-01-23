@@ -1,4 +1,4 @@
-baseurl = "https://akhilnair.co.uk/"
+baseurl = "http://akhilnair.co.uk/"
 title = "Akhil Nair"
 theme = "hugo-creative-portfolio-theme"
 languageCode = "en-uk"
