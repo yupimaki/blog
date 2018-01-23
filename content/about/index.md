@@ -3,19 +3,27 @@ date = "2018-02-22T21:46:33+05:30"
 title = "About me"
 +++
 
-An sincerity so extremity he additions. Her yet **there truth merit**. Mrs all projecting favourable now unpleasing. Son law garden chatty temper. Oh children provided to mr elegance marriage strongly. Off can admiration prosperous now devonshire diminution law.
+Things I'm interested in
 
-Received overcame oh sensible so at an. Formed do change merely to county it. **Am separate contempt** domestic to to oh. On relation my so addition branched. Put hearing cottage she norland letters equally prepare too. Replied exposed savings he no viewing as up. Soon body add him hill. No father living really people estate if. Mistake do produce beloved demesne if am pursuit.
+ - Data
+ - Data analytics and visualisation
+ - Tools for data science
+ - Distributed data engineering
+ - Containerisation and orchestration
+ - General computer networking
+ - Climbing (bouldering in particular)
+ - R
+ - Learning and sharing interesting things about computers
+ - Ramen
+ - London 
+ - Transport infrastructure
+ - Healthcare
 
 ![This is me and Caroline's needy lovely dog][1]
 
-The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
-
 #### Education
 
-* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-* Aliquam tincidunt mauris eu risus.
-
-When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then
+* I went to The Latymer School (not Latymer Upper School) in Edmonton from 2003 - 2010
+* I went to The University of Bristol from 2010 - 2014 and got a 1st MSci in Maths and Stats 
 
 [1]: /img/me.png
