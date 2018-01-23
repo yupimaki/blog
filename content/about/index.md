@@ -19,6 +19,10 @@ Things I'm interested in
  - Transport infrastructure
  - Healthcare
 
+#### A Picture
+
+I'm the one on the left
+
 ![This is me and Caroline's needy lovely dog][1]
 
 #### Education
