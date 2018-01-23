@@ -46,7 +46,7 @@ The steps we will take are
 
 Download the code (including the necessary config) [here](https://github.com/AkhilNairAmey/netflix-and-socks). If you've used `git` before, you know what to do. Else, click the `Download ZIP` button and get the code like a normal folder. This is known as a code repository or _repository_
 
-![Clone Repo](../../img/portfolio/automating-avoiding-netflix-geofencing/img/clone.png)
+![Clone Repo](/img/portfolio/automating-avoiding-netflix-geofencing/img/clone.png)
 
 For now, we won't need any of the files. Just remember there is a file at `folder/secrets/terraform.tfvars.template`, which we will soon be filling in with some credentials you'll make.
 
@@ -79,7 +79,7 @@ Create a `Terraform` User with programmatic access to enable access tokens.
 
 You should have a result like the image below before moving to the next screen.
 
-![User Creation](../../img/portfolio/automating-avoiding-netflix-geofencing/img/user.png)
+![User Creation](/img/portfolio/automating-avoiding-netflix-geofencing/img/user.png)
 
  - Click `Next`
 
@@ -89,7 +89,7 @@ Next we give our `Terraform` user permission to manipulate servers on our AWS ac
  - Type `EC2Full` in the search bar
  - Tick the policy that returns from the search - `AmazonEC2FullAccess`
 
-![Add Permissions](../../img/portfolio/automating-avoiding-netflix-geofencing/img/permissions.png)
+![Add Permissions](/img/portfolio/automating-avoiding-netflix-geofencing/img/permissions.png)
 
  - Click `Next`
 
