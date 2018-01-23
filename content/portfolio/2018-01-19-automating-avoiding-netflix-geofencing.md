@@ -174,3 +174,9 @@ Plan: 4 to add, 0 to change, 0 to destroy.
  
  Akhil
  
+ ### Notes
+ 
+  1. Completely remove any AWS infrastructure by running `./terraform.sh destory`
+  2. AWS charges by the hour, and you get `750` hours per month usage of a free tier machine in the first year. `31 * 24 = 744` so you may think you're in the clear. However, an hour is clocked whenever you turn on a machine, thus if you turn a machine off and on 4 times in 10 minutes, you will use up 4 hours usage. Be weary of this.
+  3. Due to a bug in `google-chrome`, you have to close all chrome windows before launching the proxy browser. 
+ 
