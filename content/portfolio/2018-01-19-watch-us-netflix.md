@@ -7,7 +7,7 @@ categories: [ssh, routing, netflix]
 tags: [ssh, routing, netflix]
 subtitle: "With some cool tech"
 image: "img/portfolio/watch-us-netflix/terraform.png"
-description: "Easily set up web traffic routing infrastructure"
+description: "Aimed primarily at OSX or Linux users"
 ---
 
 Circumventing Netflix's georestrictions is legal, however, by employing this you would be breaking the [Netflix Terms of Use](https://help.netflix.com/legal/termsofuse)
