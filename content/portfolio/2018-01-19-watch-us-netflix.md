@@ -1,28 +1,39 @@
 ---
-title: Automating Avoiding Netflix Geofencing
-author: ~
+title: Watch US Netflix (2018-01-19)
+author: Akhil Nair
 date: '2018-01-19'
-slug: ''
-categories: []
-tags: []
-subtitle: "Make an AWS account, get US internet"
-image: "img/portfolio/automating-avoiding-netflix-geofencing/terraform.png"
+slug: 'watch-us-netflix'
+categories: [ssh, routing, netflix]
+tags: [ssh, routing, netflix]
+subtitle: "With some cool tech"
+image: "img/portfolio/watch-us-netflix/terraform.png"
 description: "Easily set up web traffic routing infrastructure"
 ---
 
+Circumventing Netflix's georestrictions is legal, however, by employing this you would be breaking the [Netflix Terms of Use](https://help.netflix.com/legal/termsofuse)
+
+  > You also agree not to: circumvent, remove, alter, deactivate, degrade or thwart any of the content protections in the Netflix service
+
+They would probably ban your account if they really cared, but thus far, no action has been taken against users using VPNs to watch Netflix. With this in mind:
+
 _DISCLAIMER: This has been written for educational purposes of learning about routing net traffic. I am not responsible for how you use this information. The title is clickbait only._
 
+Now, to the plan.
+
 ## TL;DR
+ 
+If you're familiar with AWS (Amazon Web Services), you only need to do take the following steps to get this up and running, hence it is super easy and convienient. 
 
  - Clone [this repo](https://github.com/AkhilNairAmey/netflix-and-socks) to get the necessary files
  - Install terraform
  - `cd` into `netflix-and-socks` repo
- - Copy and fill in `secrets/terraform.tfvars.template` as `secrets/terraform.tfvars`
+ - Copy and fill in `secrets/terraform.tfvars.template` as `secrets/terraform.tfvars` with an AWS User AK/PK pair
  - Run `terraform init`
  - Run `./terraform.sh apply` and type `yes` to confirm
- - Run `./launch.sh` to avoid geofencing.
+ - Run `./launch.sh` to avoid geofencing
+ - (Optional) Run `./terraform.sh destroy` to tear down all AWS resources provisioned during the `apply` phase
 
-If you're familiar with AWS (Amazon Web Services), this is all you need to do, hence it is super easy and convienient.  If you're not so familiar, read on. I'll take you through step-by-step.
+ If you're not so familiar with AWS, read on. I'll take you through step-by-step.
 
 ## Introduction
 
@@ -44,11 +55,11 @@ The steps we will take are
 
 ### Clone my `terraform` files
 
-Download the code (including the necessary config) [here](https://github.com/AkhilNairAmey/netflix-and-socks). If you've used `git` before, you know what to do. Else, click the `Download ZIP` button and get the code like a normal folder. This is known as a code repository or _repository_
+Download the code (including the necessary config) [here](https://github.com/AkhilNairAmey/netflix-and-socks). If you've used `git` before, you know what to do. Else, click the `Download ZIP` button and get the code like a normal folder. This is known as a code repository or _repository_.
 
-![Clone Repo](/img/portfolio/automating-avoiding-netflix-geofencing/img/clone.png)
+![Clone Repo](/img/portfolio/watch-us-netflix/img/clone.png)
 
-For now, we won't need any of the files. Just remember there is a file at `folder/secrets/terraform.tfvars.template`, which we will soon be filling in with some credentials you'll make.
+For now, we won't need any of the files. Just remember there is a file at `folder/secrets/terraform.tfvars.template`, which we will soon be filling in with some credentials you'll make. Currently, it's a template and looks like this:
 
 ```
 akhil@pc:~/personal/netflix-and-socks cat secrets/terraform.tfvars.template
@@ -79,7 +90,7 @@ Create a `Terraform` User with programmatic access to enable access tokens.
 
 You should have a result like the image below before moving to the next screen.
 
-![User Creation](/img/portfolio/automating-avoiding-netflix-geofencing/img/user.png)
+![User Creation](/img/portfolio/watch-us-netflix/img/user.png)
 
  - Click `Next`
 
@@ -89,7 +100,7 @@ Next we give our `Terraform` user permission to manipulate servers on our AWS ac
  - Type `EC2Full` in the search bar
  - Tick the policy that returns from the search - `AmazonEC2FullAccess`
 
-![Add Permissions](/img/portfolio/automating-avoiding-netflix-geofencing/img/permissions.png)
+![Add Permissions](/img/portfolio/watch-us-netflix/img/permissions.png)
 
  - Click `Next`
 
@@ -112,7 +123,7 @@ Do you remember that `secrets/terraform.tfvars.template` file from before? Make 
 
 We also need to add a _Public Key_ to this file. I'm not going to go through in detail what this is, or how to create this keypair, but it a keypair is a way to prove your identify and authenticate with a server or program without using a password. Follow [this short guide](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/) from GitHub to effortlessly set this up. Add the public key you made to `terraform.tfvars`.
 
-This is also where you would change the server location. Say, if you needed to browse the web from mainland europe, you would set the `region` to `eu-central-1`
+This is where you would change the server location. Say, if you needed to browse the web from mainland europe, you would set the `region` to `eu-central-1`. You can find the complete list of regions [here](https://docs.aws.amazon.com/general/latest/gr/rande.html#apigateway_region).
 
 Note, the name and location of the file _is_ important.
 
@@ -179,4 +190,4 @@ Plan: 4 to add, 0 to change, 0 to destroy.
   1. Completely remove any AWS infrastructure by running `./terraform.sh destory`
   2. AWS charges by the hour, and you get `750` hours per month usage of a free tier machine in the first year. `31 * 24 = 744` so you may think you're in the clear. However, an hour is clocked whenever you turn on a machine, thus if you turn a machine off and on 4 times in 10 minutes, you will use up 4 hours usage. Be weary of this.
   3. Due to a bug in `google-chrome`, you have to close all chrome windows before launching the proxy browser. 
- 
+   
