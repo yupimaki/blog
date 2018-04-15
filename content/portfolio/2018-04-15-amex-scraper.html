@@ -21,7 +21,7 @@ description: "README to a short library, in case you want to poll your amex data
 
 driver &lt;- RSelenium::rsDriver(browser = &quot;chrome&quot;, verbose = FALSE, extraCapabilities = options)</code></pre>
 <p>Go directly to the transactions page URL to be blocked by the login screen.</p>
-<pre class="r"><code>URL = &#39;https://global.americanexpress.com/myca/intl/istatement/emea/v1/statement.do?Face=en_GB&amp;method=displayStatement&amp;sorted_index=0&amp;BPIndex=0#/&#39;
+<pre class="r"><code>URL &lt;- &#39;https://global.americanexpress.com/myca/intl/istatement/emea/v1/statement.do?Face=en_GB&amp;method=displayStatement&amp;sorted_index=0&amp;BPIndex=0#/&#39;
 
 client &lt;- driver$client
 client$navigate(URL)</code></pre>

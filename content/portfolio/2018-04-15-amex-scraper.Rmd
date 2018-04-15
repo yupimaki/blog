@@ -38,7 +38,7 @@ driver <- RSelenium::rsDriver(browser = "chrome", verbose = FALSE, extraCapabili
 Go directly to the transactions page URL to be blocked by the login screen.  
 
 ```{r go_to_url}
-URL = 'https://global.americanexpress.com/myca/intl/istatement/emea/v1/statement.do?Face=en_GB&method=displayStatement&sorted_index=0&BPIndex=0#/'
+URL <- 'https://global.americanexpress.com/myca/intl/istatement/emea/v1/statement.do?Face=en_GB&method=displayStatement&sorted_index=0&BPIndex=0#/'
 
 client <- driver$client
 client$navigate(URL)
