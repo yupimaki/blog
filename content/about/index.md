@@ -8,7 +8,7 @@ Things I'm interested in
  - Data
  - Data analytics and visualisation
  - Tools for data science
- - Distributed data engineering
+ - Data engineering
  - Containerisation and orchestration
  - General computer networking
  - Climbing (bouldering in particular)

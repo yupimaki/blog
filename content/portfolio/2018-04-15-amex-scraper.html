@@ -1,0 +1,58 @@
+---
+title: Amex Scraper
+author: ~
+date: '2018-04-15'
+slug: amex-scraper
+categories: ['scaper', 'xml2', 'rvest', 'selenium', 'rselenium', 'amex']
+tags: ['xml2', 'rvest', 'selenium', 'rselenium']
+image: "img/portfolio/amex-scaper/amex.png"
+description: "README to a short library, in case you want to poll your amex data too"
+---
+
+
+
+<p>A small library to scrape data from the Amex GUI, to take care of your finances.</p>
+<div id="usage" class="section level2">
+<h2>Usage</h2>
+<p>Start the Selenium driver. Remove the <code>extraCapabilities</code> argument to run Chrome without headless mode, and watch it go!</p>
+<pre class="r"><code>options &lt;- list(chromeOptions = list(
+  args = c(&#39;--headless&#39;, &#39;--disable-gpu&#39;, &#39;--window-size=1280,800&#39;)
+))
+
+driver &lt;- RSelenium::rsDriver(browser = &quot;chrome&quot;, verbose = FALSE, extraCapabilities = options)</code></pre>
+<p>Go directly to the transactions page URL to be blocked by the login screen.</p>
+<pre class="r"><code>URL = &#39;https://global.americanexpress.com/myca/intl/istatement/emea/v1/statement.do?Face=en_GB&amp;method=displayStatement&amp;sorted_index=0&amp;BPIndex=0#/&#39;
+
+client &lt;- driver$client
+client$navigate(URL)</code></pre>
+<p>Hide your credentials in your system environment when logging in. In bash, placing a space before typing in a command will ensure your password is not saved in your history. Your credentials will of course be available through your envrionment variables though.</p>
+<pre class="r"><code>scrapers::login(client, Sys.getenv(&#39;AMEXUSERNAME&#39;), Sys.getenv(&#39;AMEXPASSWORD&#39;))</code></pre>
+<p>Manipulate the date picker widget to pick all days you could have made transactions. I started using my card on <code>2016-11-16</code>. Helpfully, Amex greys out days before the first transaction so it’s obvious to you (and so it could be automated, but it’s more effort than it’s worth).</p>
+<pre class="r"><code>scrapers::select_all(client, &quot;2016-11-16&quot;)</code></pre>
+<p>Click “Show More Transactions” to load the entire list.</p>
+<pre class="r"><code>scrapers::load_all(client)</code></pre>
+<p>Get the table in a usable form using <code>rvest</code> and <code>xml2</code>.</p>
+<pre class="r"><code>scrappers::get_transaction_table(client) %&gt;%
+  tibble::as_tibble() %&gt;% 
+  separate(Amount, into = c(&quot;junk&quot;, &quot;amount&quot;), sep = &quot; &quot;) %&gt;%
+  mutate(amount = stringr::str_replace_all(amount, &quot;[£ ,]&quot;, &quot;&quot;) %&gt;% as.numeric()) %&gt;%
+  mutate(Date = Date %&gt;% as.Date(format = &quot;%d %b %y&quot;)) -&gt; tbl</code></pre>
+<p>Plot a graph! Better with classification.</p>
+<pre class="r"><code>ggplot(tbl %&gt;% 
+         filter(amount &gt; 0) %&gt;% 
+         arrange(Date) %&gt;% 
+         mutate(cumulative = cumsum(amount)
+  )) +
+  geom_bar(
+    aes(x = Date, y = cumulative, group = Description),
+    position = &quot;identity&quot;, stat = &quot;identity&quot;, fill = &quot;steelblue&quot;,
+  ) +
+  theme_minimal() +
+  labs(
+    title = &quot;Total spend on Amex card&quot;,
+    x = &quot;Date&quot;, 
+    y = &quot;Cumulative Spend&quot;
+  ) +
+  scale_y_continuous(labels = scales::dollar_format(prefix = &quot;£&quot;))</code></pre>
+<p><img src="/portfolio/2018-04-15-amex-scraper_files/figure-html/plot_transactions-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
