@@ -1,0 +1,60 @@
+---
+title: Vega in Rmarkdown 
+author: ~
+date: '2018-04-25'
+slug: rmarkdown-vega
+categories: ['vega', 'rmarkdown', 'r2d3', 'markdown']
+tags: ['vega', 'rmarkdown', 'r2d3', 'markdown']
+image: "img/portfolio/rmarkdown-vega/r2d3-hex.png"
+description: "Use the full Vega library in Rmarkdown using r2d3"
+---
+
+This page is generated from an `Rmarkdown` file using an example from the [Vega gallery](https://vega.github.io/vega/examples/brushing-scatter-plots/). 
+
+The plotting works out of the box with `r2d3`. As far as I know, any Vega plot can directly be used with no difficulty, offering more functionality than `hrbrmaster`'s awesome `vegalite` port for `R` ([found here](https://github.com/hrbrmstr/vegalite)).
+
+Check out the source code [here](https://github.com/AkhilNairAmey/rmarkdown-vega).
+
+```{r setup, include=FALSE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Reproduce the Example Plot
+
+Read in some nice `JSON` data. This will be passed to `r2d3::r2d3`, then can magically be directly referred to in the script that specifies the Vega visualisation, `iris-interaction.js`.
+
+```{r}
+data = jsonlite::toJSON(jsonlite::read_json("rmarkdown-vega/data/iris.json"))
+```
+
+The below chunk would usually produce a normal `r2d3` plot, but the `height` of the `container` element `r2d3` exposes is set to `0`. This is fine as `iris-interaction.js` does not refer to the container element `r2d3` exposes.
+
+```{r}
+# Include vega as a dependency
+# Set the height as 0 so the html element produced has no height 
+# The visualisation hooks into a div defined below as it must have a static id
+r2d3::r2d3(data = data, script = "rmarkdown-vega/iris-interaction.js", dependencies = "rmarkdown-vega/lib/vega.min.js", height = 0)
+```
+
+Here I attach a global `div` directly to the markdown page. You can't see it, but it's literally right below this line, which is why the visualisation has hooked into it. Look at the raw `Rmd` to confirm.
+
+<div id='iris-container'></div>
+
+The `div` is given an `id` which is specified in `iris-interaction.js`, again just as in the standard Vega example. The `js` file looks exactly like this
+
+```
+var spec = { ... };
+
+var view = new vega.View(vega.parse(spec), {
+  loader: vega.loader({baseURL: '/vega/'}),
+  logLevel: vega.Warn,
+  renderer: 'canvas'
+})
+// Here I specify the html element to drop the visualisation in
+.initialize('#iris-container').hover().run(); 
+
+```
+
+If you know the proper way to do this, please let me know! 
+
+Akhil
